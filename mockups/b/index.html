@@ -68,16 +68,21 @@
   .tabbar button{font-size:14px;padding:15px 4px 13px}
 }
 @media(min-width:760px){
-  .tabbar button{flex:0 0 auto;min-width:110px;font-size:15px;padding:16px 22px}
+  .tabbar__in{justify-content:center}
+  .tabbar button{flex:0 0 auto;min-width:118px;font-size:15px;padding:16px 22px}
   .tabbar button b{font-size:10px}
-  .panelB__body{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:start}
-  .panelB__shot{aspect-ratio:4/3}
-  .panelB__head{padding-top:0}
   .commonB__grid{grid-template-columns:repeat(3,1fr)}
   .heroB{padding:56px 0 46px}
   .heroB p{font-size:15px}
   .panelB__acts{grid-template-columns:auto auto;justify-content:start}
   .panelB__acts .btn{padding:0 26px}
+}
+@media(min-width:900px){
+  .panelB{display:grid;grid-template-columns:360px minmax(0,1fr);gap:36px;align-items:start;padding:30px 0 44px}
+  .panelB__shot{aspect-ratio:4/3;margin:0}
+  .panelB__body{display:grid;grid-template-columns:minmax(0,1fr) 296px;gap:26px;align-items:start}
+  .panelB__head{padding-top:0}
+  .panelB__lead{font-size:14.5px}
 }
 </style>
 </head>
