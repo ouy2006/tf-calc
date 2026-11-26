@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>피클 | 진행 업무 대시보드</title>
+<meta name="description" content="이건우 대표의 진행 업무를 한 화면에서 보는 대시보드. 구글 시트 '공개요약' 탭을 실시간으로 읽어 표시합니다." />
+<meta name="theme-color" content="#703DFF" />
+<meta name="robots" content="noindex, nofollow" />
+<link rel="icon" href="images/brand/favicon.svg" type="image/svg+xml" />
+<style>
+@font-face{font-family:"Syne";src:url("fonts/Syne-latin.woff2") format("woff2");font-weight:400 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Spoqa Han Sans Neo";src:url("fonts/SpoqaHanSansNeo-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Spoqa Han Sans Neo";src:url("fonts/SpoqaHanSansNeo-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Spoqa Han Sans Neo";src:url("fonts/SpoqaHanSansNeo-Bold.woff2") format("woff2");font-weight:700 800;font-display:swap}
+
+:root{
+  --purple:#703DFF; --purple-hover:#5A2BD6; --deep:#411199; --dark:#31096F;
+  --ink:#24272A; --muted:#586067; --gray:#97A3AE; --lgray:#D8DFE1; --lpurple:#C5B4E2;
+  --neon:#B1FD07; --tint:#F4F1FF; --tint2:#EDE7FF; --white:#fff;
+  --line:rgba(36,39,42,.14); --line2:rgba(36,39,42,.28);
+  --latin:"Syne","Spoqa Han Sans Neo",system-ui,sans-serif;
+  --kr:"Spoqa Han Sans Neo","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --max:1240px; --hdr:56px;
+  --c-run:#703DFF; --c-ready:#0B6CB0; --c-wait:#8A5A00; --c-hold:#8A5A00; --c-done:#5E8B00; --c-cancel:#8B949B;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--kr);font-size:15px;line-height:1.6;letter-spacing:-.012em;word-break:keep-all;overflow-wrap:break-word;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+p,h1,h2,h3,h4{margin:0}
+h1,h2,h3,h4{line-height:1.2;letter-spacing:-.03em;font-weight:700}
+ul{margin:0;padding:0;list-style:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--purple);outline-offset:2px}
+.wrap{width:min(100% - 32px,var(--max));margin-inline:auto}
+.num{font-family:var(--latin);font-variant-numeric:tabular-nums;font-weight:700;letter-spacing:-.02em}
+
+/* header */
+.hdr{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.hdr__in{display:flex;align-items:center;gap:10px;height:var(--hdr)}
+.hdr__logo{width:106px;height:auto;flex:none}
+.hdr__tag{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);padding-left:11px;border-left:1px solid var(--line);font-family:var(--latin);white-space:nowrap}
+.hdr__sp{flex:1}
+.hdr__acts{display:flex;align-items:center;gap:6px}
+.hdr__btn{display:inline-flex;align-items:center;gap:5px;height:32px;padding:0 11px;border:1px solid var(--line2);border-radius:2px;font-size:12px;font-weight:700;white-space:nowrap}
+.hdr__btn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.hdr__btn--p{background:var(--purple);border-color:var(--purple);color:#fff}
+.hdr__btn--p:hover{background:var(--purple-hover);border-color:var(--purple-hover)}
+@media(max-width:600px){.hdr__tag{display:none}.hdr__logo{width:92px}.hdr__btn span.lbl{display:none}.hdr__btn{padding:0 9px}}
+
+/* hero */
+.hero{background:var(--purple);color:#fff;padding:18px 0 20px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 120% at 88% 10%,rgba(177,253,7,.26),rgba(112,61,255,0) 62%);pointer-events:none}
+.hero__in{position:relative;z-index:1}
+.hero__top{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:flex-end;justify-content:space-between}
+.hero h1{font-size:clamp(20px,5vw,28px)}
+.hero h1 span{font-family:var(--latin);font-weight:400;opacity:.62;font-size:.6em;letter-spacing:.06em;margin-left:8px}
+.hero__date{font-size:12px;color:rgba(255,255,255,.82)}
+.hero__date b{font-weight:700;color:#fff}
+.src{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;font-weight:700;padding:4px 9px;border:1px solid rgba(255,255,255,.4);border-radius:100px;color:#fff}
+.src i{width:6px;height:6px;border-radius:50%;background:var(--neon);display:block;flex:none}
+.src--warn{border-color:rgba(177,253,7,.9);background:rgba(177,253,7,.18)}
+.src--warn i{background:#FFD84D}
+.src button{color:#fff;font-weight:700;text-decoration:underline;font-size:11px;padding:0}
+
+/* progress */
+.prog{margin-top:14px}
+.prog__bar{display:flex;height:12px;border-radius:100px;overflow:hidden;background:rgba(255,255,255,.2);gap:2px}
+.prog__bar i{display:block;height:100%}
+.prog__legend{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:7px;font-size:11px;color:rgba(255,255,255,.85)}
+.prog__legend span{display:inline-flex;align-items:center;gap:5px}
+.prog__legend b{font-family:var(--latin);font-variant-numeric:tabular-nums;color:#fff;font-size:12px}
+.prog__legend em{width:7px;height:7px;border-radius:2px;display:block;font-style:normal}
+
+/* KPI */
+.kpi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:14px}
+@media(min-width:760px){.kpi{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.kpi__c{background:rgba(49,9,111,.34);border:1px solid rgba(255,255,255,.3);padding:10px 12px;border-radius:2px;min-width:0}
+.kpi__c b{display:block;color:#fff;font-variant-numeric:tabular-nums;font-size:24px;line-height:1.15;font-weight:800;letter-spacing:-.03em}
+.kpi__c b small{font-size:12px;font-weight:700;margin-left:2px;opacity:.78}
+.kpi__c span{display:block;margin-top:3px;font-size:11px;color:rgba(255,255,255,.9);font-weight:500}
+.kpi__c--alert{background:rgba(177,253,7,.94);border-color:var(--neon);color:#243000}
+.kpi__c--alert span{color:#3E4E00}
+
+/* section */
+.sec{padding:24px 0 6px}
+.sec--tint{background:var(--tint);padding-bottom:24px}
+.sec__head{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--line);padding-top:13px;margin-bottom:12px;position:relative}
+.sec__head::before{content:"";position:absolute;top:-1px;left:0;width:52px;height:1px;background:var(--purple)}
+.sec__head h2{font-size:clamp(17px,4vw,22px)}
+.eyebrow{display:block;font-family:var(--latin);font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--purple);margin-bottom:4px}
+.sec__head p{font-size:12.5px;color:var(--muted);margin-top:5px;max-width:64ch}
+.sec__tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+
+/* decision cards */
+.dec{display:grid;gap:8px}
+@media(min-width:820px){.dec{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.dc{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-left:3px solid var(--purple);border-radius:0 3px 3px 0;padding:11px 12px;min-width:0}
+.dc--due{border-left-color:#C2185B}
+.dc--mid{border-left-color:#C79A00}
+.dc__b{min-width:0;flex:1}
+.dc__t{font-size:13.5px;font-weight:700;line-height:1.35}
+.dc__s{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+.dc__m{display:flex;flex-wrap:wrap;gap:4px 8px;align-items:center;margin-top:6px;font-size:10.5px;color:var(--muted)}
+.dc__k{flex:none;text-align:right;font-size:10.5px;font-weight:700;color:var(--purple);white-space:nowrap}
+
+/* filters */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 11px;border:1px solid var(--line2);border-radius:100px;font-size:12px;font-weight:500;background:#fff;color:var(--muted);white-space:nowrap}
+.chip:hover{border-color:var(--purple);color:var(--purple)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:700}
+.chip b{font-family:var(--latin);font-variant-numeric:tabular-nums;font-size:11.5px;opacity:.85}
+.chip__dot{width:7px;height:7px;border-radius:50%;display:block;flex:none}
+.search{position:relative;flex:1 1 180px;min-width:0;max-width:320px}
+.search input{width:100%;height:30px;border:1px solid var(--line2);border-radius:100px;background:#fff;padding:0 30px 0 30px;font-size:12.5px}
+.search input::-webkit-search-cancel-button{display:none}
+.search svg{position:absolute;left:10px;top:50%;transform:translateY(-50%);pointer-events:none}
+.filters__lab{font-size:11px;font-weight:700;color:var(--gray);letter-spacing:.06em;text-transform:uppercase;font-family:var(--latin);margin-right:2px}
+
+/* group */
+.grp{margin-top:16px}
+.grp__h{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:baseline;margin-bottom:8px}
+.grp__h h3{font-size:14px;display:flex;align-items:center;gap:7px}
+.grp__h h3 i{width:8px;height:8px;border-radius:2px;display:block;flex:none;background:var(--purple)}
+.grp__h span{font-size:11px;color:var(--muted);font-family:var(--latin);font-variant-numeric:tabular-nums}
+.rows{display:grid;gap:7px}
+@media(min-width:820px){.rows{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.row{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:3px;padding:9px 11px;min-width:0}
+.row--late{border-color:rgba(194,24,91,.45);background:#FFF7FA}
+.row--done{background:#FAFAFB}
+.row--done .row__t{color:var(--muted);font-weight:500}
+.row--cancel{background:#FAFAFB;opacity:.8}
+.row__st{flex:none;width:52px;padding-top:2px}
+.row__b{min-width:0;flex:1}
+.row__t{font-size:13px;font-weight:700;line-height:1.4}
+.row__s{font-size:11.5px;color:var(--muted);margin-top:3px;line-height:1.5}
+.row__m{display:flex;flex-wrap:wrap;gap:4px 7px;align-items:center;margin-top:5px;font-size:10.5px;color:var(--muted)}
+.row__due{flex:none;font-size:10.5px;font-weight:700;white-space:nowrap;text-align:right;font-variant-numeric:tabular-nums}
+.row__due--soon{color:#C2185B}
+.row__due--near{color:#A57600}
+.row__due em{display:block;font-style:normal;font-size:9.5px;font-weight:500;color:var(--gray);margin-top:1px}
+
+/* badges */
+.st{display:inline-flex;align-items:center;justify-content:center;height:19px;padding:0 6px;border-radius:2px;font-size:10px;font-weight:700;white-space:nowrap}
+.st--진행중{background:var(--tint2);color:var(--deep)}
+.st--진행전{background:#E7F2FA;color:#0B5A8A}
+.st--대기{background:#FFF3C4;color:#6B5200}
+.st--연기{background:#F5EBD6;color:#7A5B00}
+.st--완료{background:rgba(177,253,7,.42);color:#3E4E00}
+.st--취소{background:#EEF0F2;color:#5B646B}
+.imp{display:inline-flex;align-items:center;height:19px;padding:0 6px;border-radius:2px;font-size:10px;font-weight:700;border:1px solid var(--line2);color:var(--muted);white-space:nowrap}
+.imp--상{border-color:rgba(194,24,91,.5);color:#C2185B}
+.imp--중{color:#7A5B00;border-color:rgba(165,118,0,.5)}
+.need{display:inline-flex;align-items:center;gap:4px;height:19px;padding:0 7px;border-radius:2px;font-size:10px;font-weight:700;background:#FFF3C4;color:#6B5200;white-space:nowrap}
+.need i{width:5px;height:5px;border-radius:50%;background:#C79A00;display:block}
+.tag{display:inline-flex;align-items:center;height:19px;padding:0 6px;border-radius:2px;font-size:10px;font-weight:500;background:var(--tint);color:var(--deep);white-space:nowrap}
+
+/* footer */
+.ft{border-top:1px solid var(--line);margin-top:24px;padding:20px 0 40px;background:#FAFAFB}
+.ft__note{font-size:12px;color:var(--muted);line-height:1.7;max-width:82ch}
+.ft__note b{color:var(--ink)}
+.ft__row{display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;justify-content:space-between;margin-top:14px}
+.ft__row small{font-size:11px;color:var(--gray);line-height:1.6}
+.ft__links{display:flex;flex-wrap:wrap;gap:10px}
+.ft__links a{font-size:11.5px;font-weight:700;color:var(--purple)}
+.ft__links a:hover{text-decoration:underline}
+.empty{padding:26px;text-align:center;color:var(--muted);font-size:12.5px;border:1px dashed var(--line2);border-radius:3px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="wrap hdr__in">
+    <img class="hdr__logo" src="images/brand/logo-wordmark.svg" alt="TENNIS FANTASY" width="106" height="10" />
+    <span class="hdr__tag">Pickle Work</span>
+    <span class="hdr__sp"></span>
+    <div class="hdr__acts">
+      <a class="hdr__btn" href="https://app.notion.com/p/27049e868ef447ccb86d2c670115c665" target="_blank" rel="noopener">노션 당일 할일 <span aria-hidden="true">↗</span></a>
+      <a class="hdr__btn hdr__btn--p" href="https://docs.google.com/spreadsheets/d/1hflbd9KJeQai7_xwa7O8mQpuC8b8OocvHV5ZAgx124Y/edit" target="_blank" rel="noopener">시트 <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero__in">
+    <div class="hero__top">
+      <h1>진행 업무 대시보드<span>WORK</span></h1>
+      <div class="hero__date"><b id="todayLabel">—</b> 기준 · 노션 <b>당일 할일</b> A 방식</div>
+    </div>
+    <div class="kpi" id="kpi"></div>
+    <div class="prog">
+      <div class="prog__bar" id="progBar" role="img" aria-label="상태별 건수 막대"></div>
+      <div class="prog__legend" id="progLegend"></div>
+    </div>
+    <div class="src" id="src"><i></i><span>시트 확인 중…</span></div>
+  </div>
+</section>
+
+<main>
+  <section class="sec" id="decide">
+    <div class="wrap">
+      <div class="sec__head">
+        <div>
+          <span class="eyebrow">Needs Your Call</span>
+          <h2>대표님 결정·확인 대기</h2>
+          <p>지금 대표님 선택이나 확인이 있어야 다음 단계로 넘어가는 항목만 모았습니다.</p>
+        </div>
+        <div class="sec__tools"><span class="tag" id="decideCount">–</span></div>
+      </div>
+      <div class="dec" id="decideBox"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="work">
+    <div class="wrap">
+      <div class="sec__head">
+        <div>
+          <span class="eyebrow">All Work</span>
+          <h2>전체 업무</h2>
+          <p>영역별로 묶어 진행중 → 진행전 → 완료 순으로 정렬했습니다. 마감이 지난 항목은 붉게 표시됩니다.</p>
+        </div>
+      </div>
+      <div class="filters" role="group" aria-label="상태 필터" id="statusFilters"></div>
+      <div class="filters" id="areaFilters" role="group" aria-label="영역 필터"></div>
+      <div class="filters">
+        <span class="filters__lab">담당</span>
+        <div id="ownerFilters" style="display:flex;flex-wrap:wrap;gap:6px"></div>
+        <div class="search">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#97A3AE" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+          <label class="sr" for="q">검색</label>
+          <input id="q" type="search" placeholder="업무명·요약 검색" autocomplete="off" />
+        </div>
+        <button type="button" class="chip" id="reset">필터 초기화</button>
+      </div>
+      <div id="list" aria-live="polite"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="ft">
+  <div class="wrap">
+    <p class="ft__note">
+      <b>데이터 편집은 구글 시트에서</b> — 이 화면은 <b>피클 진행 업무 대시보드</b> 시트의 `공개요약` 탭(웹 게시 CSV)을 읽어 그립니다.
+      시트를 고치면 이 화면에 반영됩니다(게시본은 수 분 안에 갱신). 노션 `당일 할일`의 A 방식 상태 태그를 기준으로 피클이 정리합니다.
+    </p>
+    <p class="ft__note" style="margin-top:8px">
+      <b>민감정보 제외</b> — 구체적 금액·전화번호·이메일·계좌·분쟁 상대방 실명과 세부 법무 쟁점은 이 공개 화면에 넣지 않았습니다. 상세 내역은 시트의 비공개 탭 `상세내역(비공개)`에만 있습니다(웹 게시 안 함).
+    </p>
+    <div class="ft__row">
+      <small id="footMeta">–</small>
+      <div class="ft__links">
+        <a href="https://app.notion.com/p/27049e868ef447ccb86d2c670115c665" target="_blank" rel="noopener">노션 당일 할일 ↗</a>
+        <a href="https://docs.google.com/spreadsheets/d/1hflbd9KJeQai7_xwa7O8mQpuC8b8OocvHV5ZAgx124Y/edit" target="_blank" rel="noopener">구글 시트 ↗</a>
+        <a href="../dashboard/" target="_blank" rel="noopener">홍보 대시보드 ↗</a>
+        <a href="../" target="_blank" rel="noopener">수강료 계산기 ↗</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   피클 진행 업무 대시보드
+   데이터: 구글 시트 "피클 진행 업무 대시보드" > 공개요약 탭
+          (탭별 '웹에 게시' CSV). 실패 시 내장 스냅샷 사용.
+   ============================================================ */
+const SHEET_ID = "1hflbd9KJeQai7_xwa7O8mQpuC8b8OocvHV5ZAgx124Y";
+const SHEET_GID = "0";
+const PUB = "https://docs.google.com/spreadsheets/d/e/2PACX-1vRy_TRzdPtskBI8zV7f9gPehi7CjmFihH4R_vBUy21S6uabVbXUt7dsWDJBNFCNz60QO-FgaTiYeSEK/pub?gid=0&single=true&output=csv";
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/edit#gid=" + SHEET_GID;
+const NOTION_URL = "https://app.notion.com/p/27049e868ef447ccb86d2c670115c665";
+const BUILT = "2026-11-26";
+const SNAPSHOT = [{"ID":"P01","영역":"테니스판타지","상태":"진행중","중요도":"상","마감일":"","담당":"피클","대표확인":"N","업무명":"테니스판타지 홈페이지 제작","요약":"성장 로드맵·회원 사진 8장 반영 완료, 드라이브 브랜드 에셋으로 리뉴얼 중","갱신일":"2026-11-26"},{"ID":"P02","영역":"테니스판타지","상태":"진행중","중요도":"중","마감일":"","담당":"피클","대표확인":"N","업무명":"홈페이지 임시 공개·검증","요약":"Pages 임시 주소 배포, PC·모바일 무오류 검증 완료","갱신일":"2026-11-26"},{"ID":"P03","영역":"테니스판타지","상태":"진행중","중요도":"상","마감일":"2026-11-26","담당":"공동","대표확인":"Y","업무명":"홈페이지 개편 시안 선택","요약":"시안 A·B·C·D·E 제작·메일 발송 완료, 대표님 선택 대기","갱신일":"2026-11-26"},{"ID":"P04","영역":"테니스판타지","상태":"진행중","중요도":"중","마감일":"","담당":"피클","대표확인":"N","업무명":"홈페이지 생애주기 강조 시안 E 제작","요약":"시안 E(생애주기 강조형) 추가 제작 중","갱신일":"2026-11-26"},{"ID":"P05","영역":"유튜브·신사업","상태":"진행중","중요도":"중","마감일":"","담당":"피클","대표확인":"N","업무명":"유튜브 NASA·수면과학 다큐 톤 샘플","요약":"다큐 톤 샘플 2편 제작 중","갱신일":"2026-11-26"},{"ID":"P06","영역":"테니스판타지","상태":"진행중","중요도":"중","마감일":"","담당":"피클","대표확인":"N","업무명":"카카오채널 자동대응 매뉴얼 후속","요약":"초안 노션 저장 완료, 문구 오류 4건 수정·미답변 처리 대기","갱신일":"2026-11-26"},{"ID":"P07","영역":"테니스판타지","상태":"진행중","중요도":"중","마감일":"","담당":"공동","대표확인":"Y","업무명":"회원상담 자동화","요약":"tf-calc 연동 완료, 결제 계정(결제선생) 연결 승인 대기","갱신일":"2026-11-26"},{"ID":"P08","영역":"테니스판타지","상태":"진행전","중요도":"중","마감일":"","담당":"피클","대표확인":"N","업무명":"카카오 부재중 알림톡 레터 시험","요약":"대행사 비교·템플릿 2안·로고 완료(결제 직전), 착신 번호 1개 확정 대기","갱신일":"2026-11-26"},{"ID":"P09","영역":"법인·행정","상태":"진행중","중요도":"상","마감일":"2026-11-26","담당":"피클","대표확인":"Y","업무명":"반포점 시설 원상복구·내용증명 검토","요약":"자료조사 완료, 법무 상담 후 복구 견적·발송 주소 확인","갱신일":"2026-11-26"},{"ID":"P10","영역":"법인·행정","상태":"진행중","중요도":"중","마감일":"2026-11-30","담당":"피클","대표확인":"N","업무명":"과태료 의견서 제출 후속","요약":"의견서 이메일 제출 완료(11/26 12:18), 11/30 회신 확인 예정","갱신일":"2026-11-26"},{"ID":"P11","영역":"법인·행정","상태":"진행중","중요도":"중","마감일":"2026-11-26","담당":"피클","대표확인":"N","업무명":"건물 전문가 전화 알림","요약":"20:00 통화 알림 예약","갱신일":"2026-11-26"},{"ID":"P12","영역":"법인·행정","상태":"진행전","중요도":"중","마감일":"","담당":"공동","대표확인":"Y","업무명":"임대료 인상 산출근거 문의","요약":"안내문 확인·문의 메일 초안 작성, 법무 안건 포함 여부 결정 대기","갱신일":"2026-11-26"},{"ID":"P14","영역":"유튜브·신사업","상태":"진행전","중요도":"중","마감일":"","담당":"피클","대표확인":"N","업무명":"유튜브 매일 1편 자동화·목소리 클론","요약":"수면+영화리뷰 매일 1편 자동화, 샘플 확인 후 시작","갱신일":"2026-11-26"},{"ID":"P15","영역":"테니스판타지","상태":"진행전","중요도":"상","마감일":"","담당":"피클","대표확인":"N","업무명":"tf-calc 계산기 버그 수정","요약":"공휴일 2026~2028 누락·2027-01-01 계산 정지 버그","갱신일":"2026-11-26"},{"ID":"P16","영역":"생활·구독","상태":"진행중","중요도":"상","마감일":"2026-11-26","담당":"공동","대표확인":"Y","업무명":"디즈니+ 구독 해지","요약":"웹 직접 취소 또는 본인 통화 필요","갱신일":"2026-11-26"},{"ID":"P17","영역":"생활·구독","상태":"진행중","중요도":"중","마감일":"2026-11-26","담당":"공동","대표확인":"Y","업무명":"Apple 스토어 구독 해지","요약":"GoPro Quik 구독, 본인 동석 재통화 필요","갱신일":"2026-11-26"},{"ID":"P18","영역":"테니스판타지","상태":"진행전","중요도":"상","마감일":"2026-11-26","담당":"대표님","대표확인":"N","업무명":"동작테니스장 정산 자료 준비·납입","요약":"오늘 정산 자료 준비 및 납입","갱신일":"2026-11-26"},{"ID":"P19","영역":"테니스판타지","상태":"진행전","중요도":"중","마감일":"","담당":"대표님","대표확인":"N","업무명":"동작 연말 공지·신발 사이즈 확인","요약":"연말 공지 발송 및 회원 신발 사이즈 취합","갱신일":"2026-11-26"},{"ID":"P20","영역":"법인·행정","상태":"진행전","중요도":"중","마감일":"","담당":"대표님","대표확인":"Y","업무명":"외부 관계자 안내 문자 발송","요약":"문자 내용 정리 완료, 발송 대기","갱신일":"2026-11-26"},{"ID":"P21","영역":"테니스판타지","상태":"진행전","중요도":"중","마감일":"","담당":"대표님","대표확인":"Y","업무명":"연대관 정리","요약":"외부 업체·강사 3건 확인 정리","갱신일":"2026-11-26"},{"ID":"P22","영역":"유튜브·신사업","상태":"진행전","중요도":"하","마감일":"","담당":"대표님","대표확인":"N","업무명":"마케팅 자료 활용 방안","요약":"참고 링크 활용해 팔로업","갱신일":"2026-11-26"},{"ID":"P23","영역":"유튜브·신사업","상태":"완료","중요도":"하","마감일":"","담당":"대표님","대표확인":"N","업무명":"Claude 요청 자료 정리","요약":"완료","갱신일":"2026-11-26"},{"ID":"P24","영역":"법인·행정","상태":"취소","중요도":"중","마감일":"2026-11-27","담당":"대표님","대표확인":"N","업무명":"동작구시설관리공단 테니스장 반환 공문 회신","요약":"대표 지시로 취소(2026-11-26)","갱신일":"2026-11-26"},{"ID":"P25","영역":"법인·행정","상태":"취소","중요도":"중","마감일":"2026-11-27","담당":"대표님","대표확인":"N","업무명":"연구전담부서 변경신고","요약":"대표 지시로 취소(2026-11-26)","갱신일":"2026-11-26"},{"ID":"P26","영역":"법인·행정","상태":"취소","중요도":"중","마감일":"2026-11-27","담당":"대표님","대표확인":"N","업무명":"대전창경 임원 선출 동의서","요약":"대표 지시로 취소(2026-11-26)","갱신일":"2026-11-26"},{"ID":"P27","영역":"법인·행정","상태":"진행전","중요도":"상","마감일":"2026-11-27","담당":"대표님","대표확인":"Y","업무명":"대전 Re-Boot : Finale 성과공유회 참석","요약":"11/27 14:00~16:30, 참가 신청·캘린더 등록 완료","갱신일":"2026-11-26"},{"ID":"P28","영역":"법인·행정","상태":"진행전","중요도":"상","마감일":"2026-12-09","담당":"공동","대표확인":"Y","업무명":"벤처기업 재확인 접수·납부","요약":"~12/09 마지노선, 캘린더 등록 완료","갱신일":"2026-11-26"},{"ID":"P29","영역":"생활·구독","상태":"완료","중요도":"하","마감일":"","담당":"대표님","대표확인":"N","업무명":"지인 부탁 건 검토","요약":"완료","갱신일":"2026-11-26"},{"ID":"P30","영역":"유튜브·신사업","상태":"진행중","중요도":"상","마감일":"","담당":"대표님","대표확인":"Y","업무명":"키네토스 IT 스타트업 성장 (매출목표)","요약":"대회·모두의강사·레슨차트 개발 및 데이터 학습 진행","갱신일":"2026-11-26"},{"ID":"P31","영역":"유튜브·신사업","상태":"진행전","중요도":"중","마감일":"2026-11-30","담당":"대표님","대표확인":"N","업무명":"대회 프로그램 개발","요약":"11월까지","갱신일":"2026-11-26"},{"ID":"P32","영역":"유튜브·신사업","상태":"진행전","중요도":"중","마감일":"2026-11-30","담당":"대표님","대표확인":"N","업무명":"모두의 강사 프로그램 개발","요약":"11월까지","갱신일":"2026-11-26"},{"ID":"P33","영역":"유튜브·신사업","상태":"진행전","중요도":"중","마감일":"2026-11-30","담당":"대표님","대표확인":"N","업무명":"레슨차트 개발 완료","요약":"11월까지","갱신일":"2026-11-26"},{"ID":"P34","영역":"유튜브·신사업","상태":"진행전","중요도":"중","마감일":"","담당":"대표님","대표확인":"N","업무명":"12월~1월 데이터 학습·결론 도출","요약":"12월~1월 데이터 학습 후 결론","갱신일":"2026-11-26"},{"ID":"P35","영역":"유튜브·신사업","상태":"진행전","중요도":"중","마감일":"","담당":"대표님","대표확인":"N","업무명":"2027년 2월 정부지원사업 공략","요약":"27년 2월 정부지원사업 준비","갱신일":"2026-11-26"},{"ID":"P36","영역":"테니스판타지","상태":"진행중","중요도":"상","마감일":"2026-12-31","담당":"대표님","대표확인":"N","업무명":"반포점 매출 회복·홍보 강화","요약":"12월까지 홍보 홈페이지·프로그램 준비","갱신일":"2026-11-26"},{"ID":"P37","영역":"테니스판타지","상태":"진행전","중요도":"중","마감일":"","담당":"대표님","대표확인":"N","업무명":"테판 프로그램 콘텐츠 개발","요약":"소셜·가족 프로그램 콘텐츠","갱신일":"2026-11-26"},{"ID":"P38","영역":"테니스판타지","상태":"진행전","중요도":"중","마감일":"","담당":"대표님","대표확인":"N","업무명":"주말 게임레슨 개발","요약":"주말 가족 클럽·게임레슨","갱신일":"2026-11-26"},{"ID":"P39","영역":"테니스판타지","상태":"연기","중요도":"하","마감일":"2026-08-31","담당":"대표님","대표확인":"N","업무명":"테판 홈페이지 제작 (8월 목표)","요약":"일정 연기","갱신일":"2026-11-26"},{"ID":"P40","영역":"법인·행정","상태":"진행전","중요도":"중","마감일":"2027-01-31","담당":"대표님","대표확인":"N","업무명":"벤처기업 신청 (1월까지)","요약":"1월까지 신청","갱신일":"2026-11-26"},{"ID":"P41","영역":"법인·행정","상태":"진행전","중요도":"중","마감일":"","담당":"대표님","대표확인":"Y","업무명":"연구부서 인력 배치","요약":"정규직 1명 추가 임명·연구부서 배치 검토","갱신일":"2026-11-26"},{"ID":"P42","영역":"테니스판타지","상태":"진행전","중요도":"하","마감일":"","담당":"대표님","대표확인":"N","업무명":"생체 자격증(테니스+줄넘기) 신청","요약":"1월까지, 접수 일정 확인 필요","갱신일":"2026-11-26"},{"ID":"P43","영역":"테니스판타지","상태":"진행전","중요도":"중","마감일":"2026-11-30","담당":"대표님","대표확인":"N","업무명":"동작 계약서 작성","요약":"11월까지","갱신일":"2026-11-26"},{"ID":"P44","영역":"법인·행정","상태":"진행전","중요도":"중","마감일":"","담당":"대표님","대표확인":"Y","업무명":"토스페이먼츠 계정 이관","요약":"키네토스 명의로 이관","갱신일":"2026-11-26"},{"ID":"P45","영역":"테니스판타지","상태":"진행전","중요도":"중","마감일":"","담당":"대표님","대표확인":"N","업무명":"반포 주말 강사 미팅","요약":"가격·비율제 안건","갱신일":"2026-11-26"},{"ID":"P46","영역":"법인·행정","상태":"진행전","중요도":"하","마감일":"","담당":"대표님","대표확인":"N","업무명":"체육시설업 등록 확인·홍보","요약":"소득공제 안내용 등록 여부 확인","갱신일":"2026-11-26"},{"ID":"P47","영역":"생활·구독","상태":"진행전","중요도":"하","마감일":"","담당":"대표님","대표확인":"N","업무명":"IRP 계좌 개설","요약":"개인 IRP 계좌 개설","갱신일":"2026-11-26"},{"ID":"P48","영역":"테니스판타지","상태":"완료","중요도":"중","마감일":"","담당":"피클","대표확인":"N","업무명":"남강 1~5면 반값 가격표 수정·검증","요약":"라이브 검증·회신 발송 완료","갱신일":"2026-11-26"},{"ID":"P49","영역":"유튜브·신사업","상태":"완료","중요도":"중","마감일":"","담당":"피클","대표확인":"N","업무명":"유튜브 'DeepSleep Lab' 채널 개설","요약":"새 계정·채널 개설 완료","갱신일":"2026-11-26"},{"ID":"P50","영역":"유튜브·신사업","상태":"완료","중요도":"하","마감일":"","담당":"피클","대표확인":"N","업무명":"카라반 수면 ASMR 1분 샘플·기획안","요약":"샘플·썸네일·채널 기획안 완료","갱신일":"2026-11-26"},{"ID":"P51","영역":"유튜브·신사업","상태":"완료","중요도":"하","마감일":"","담당":"피클","대표확인":"N","업무명":"영화리뷰 벤치마킹·기획안·1분 대본","요약":"벤치마킹·기획안·대본 완료","갱신일":"2026-11-26"},{"ID":"P52","영역":"생활·구독","상태":"완료","중요도":"중","마감일":"","담당":"피클","대표확인":"N","업무명":"주요 계정 비밀번호 통일","요약":"카카오·네이버 정리(구글 현행 유지)","갱신일":"2026-11-26"},{"ID":"P53","영역":"생활·구독","상태":"완료","중요도":"중","마감일":"","담당":"피클","대표확인":"N","업무명":"구독 2건 해지","요약":"BetterMe·Suno 해지 완료","갱신일":"2026-11-26"},{"ID":"P54","영역":"법인·행정","상태":"완료","중요도":"상","마감일":"","담당":"피클","대표확인":"N","업무명":"벤처재확인 PSST 사업계획서 초안","요약":"초안·체크리스트·실행계획 완료","갱신일":"2026-11-26"},{"ID":"P55","영역":"생활·구독","상태":"완료","중요도":"하","마감일":"","담당":"피클","대표확인":"N","업무명":"기한·일정 7건 캘린더 등록·자동 연동","요약":"등록·1시간 단위 자동 연동 완료","갱신일":"2026-11-26"},{"ID":"P56","영역":"생활·구독","상태":"완료","중요도":"하","마감일":"","담당":"피클","대표확인":"N","업무명":"정부24 미환급금·리뷰·퀴즈","요약":"조회·리뷰 7건·퀴즈 4건 응모 완료","갱신일":"2026-11-26"},{"ID":"P57","영역":"테니스판타지","상태":"완료","중요도":"하","마감일":"","담당":"피클","대표확인":"N","업무명":"네이버 톡톡 미답변 3건 답장 초안","요약":"방배점 답장 초안 완료","갱신일":"2026-11-26"},{"ID":"P58","영역":"유튜브·신사업","상태":"완료","중요도":"중","마감일":"","담당":"피클","대표확인":"N","업무명":"360도 횡단보도 신호등 특허·사업화 조사","요약":"조사 보고서 완료","갱신일":"2026-11-26"},{"ID":"P59","영역":"생활·구독","상태":"완료","중요도":"하","마감일":"","담당":"피클","대표확인":"N","업무명":"테슬라 모델 Y 안경 거치대 3종 비교","요약":"비교 결과 전달 완료","갱신일":"2026-11-26"},{"ID":"P60","영역":"테니스판타지","상태":"완료","중요도":"중","마감일":"","담당":"피클","대표확인":"N","업무명":"홍보 통합 대시보드 v1 배포","요약":"라이브·검증 완료","갱신일":"2026-11-26"},{"ID":"P61","영역":"유튜브·신사업","상태":"완료","중요도":"하","마감일":"","담당":"피클","대표확인":"N","업무명":"노션 DB 65행 본문 분배·중복 정리","요약":"분배·중복 확인 완료","갱신일":"2026-11-26"}];
+
+const AREA_ORDER = ["테니스판타지", "법인·행정", "유튜브·신사업", "생활·구독"];
+const AREA_COLOR = { "테니스판타지":"#703DFF", "법인·행정":"#0B6CB0", "유튜브·신사업":"#C2185B", "생활·구독":"#5E8B00" };
+const ST_ORDER = { "진행중":0, "진행전":1, "대기":2, "연기":3, "취소":4, "완료":5 };
+const IMP_ORDER = { "상":0, "중":1, "하":2 };
+const ST_COLOR = { "진행중":"#703DFF", "진행전":"#0B6CB0", "대기":"#C79A00", "연기":"#B08A00", "완료":"#9BD400", "취소":"#C3CBD1" };
+
+const state = { rows: [], live: false, synced: null, q: "", status: "all", area: "all", owner: "all" };
+
+/* ---- CSV ---- */
+function parseCSV(text){
+  const rows = []; let row = [], cur = "", q = false;
+  for (let i = 0; i < text.length; i++){
+    const c = text[i];
+    if (q){
+      if (c === '"'){ if (text[i+1] === '"'){ cur += '"'; i++; } else q = false; }
+      else cur += c;
+    } else if (c === '"'){ q = true; }
+    else if (c === ","){ row.push(cur); cur = ""; }
+    else if (c === "\n"){ row.push(cur); rows.push(row); row = []; cur = ""; }
+    else if (c === "\r"){ /* skip */ }
+    else cur += c;
+  }
+  if (cur !== "" || row.length){ row.push(cur); rows.push(row); }
+  return rows.filter(r => r.some(v => v.trim() !== ""));
+}
+function toObjs(rows){
+  if (!rows.length) return [];
+  const head = rows[0].map(h => h.trim());
+  return rows.slice(1).map(r => {
+    const o = {}; head.forEach((h, i) => o[h] = (r[i] || "").trim()); return o;
+  }).filter(o => o["업무명"]);
+}
+async function loadCSV(){
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), 9000);
+  try{
+    const res = await fetch(PUB + "&_t=" + Math.floor(Date.now()/60000), { signal: ctl.signal, cache: "no-store", redirect: "follow" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const text = await res.text();
+    if (/^\s*<(!doctype|html)/i.test(text)) throw new Error("not csv");
+    const rows = toObjs(parseCSV(text));
+    if (!rows.length) throw new Error("empty");
+    return rows;
+  } finally { clearTimeout(t); }
+}
+
+/* ---- 날짜 ---- */
+const pad = n => String(n).padStart(2, "0");
+const ymd = d => d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+function parseDate(s){
+  const m = /^(\d{4})[-./](\d{1,2})[-./](\d{1,2})/.exec(String(s || "").trim());
+  if (!m) return null;
+  const d = new Date(+m[1], +m[2]-1, +m[3]);
+  return isNaN(d) ? null : d;
+}
+const DAY = 86400000;
+function daysLeft(due){
+  const d = parseDate(due); if (!d) return null;
+  const t = new Date(); t.setHours(0,0,0,0);
+  return Math.round((d - t) / DAY);
+}
+const WD = ["일","월","화","수","목","금","토"];
+const fmtDate = d => (d.getMonth()+1) + "/" + d.getDate() + "(" + WD[d.getDay()] + ")";
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+/* ---- 파생 ---- */
+const isOpen = r => r["상태"] !== "완료" && r["상태"] !== "취소";
+const isDecide = r => (r["대표확인"] || "").toUpperCase() === "Y" && isOpen(r);
+function counts(){
+  const c = { "진행중":0, "진행전":0, "대기":0, "연기":0, "완료":0, "취소":0 };
+  state.rows.forEach(r => { if (c[r["상태"]] == null) c[r["상태"]] = 0; c[r["상태"]]++; });
+  return c;
+}
+function kpis(){
+  const c = counts();
+  const total = state.rows.length;
+  const done = c["완료"] || 0;
+  const cancel = c["취소"] || 0;
+  const denom = Math.max(1, total - cancel);
+  const pct = Math.round(done / denom * 100);
+  const soon = state.rows.filter(r => {
+    if (!isOpen(r)) return false;
+    const n = daysLeft(r["마감일"]);
+    return n !== null && n <= 7;
+  }).length;
+  return { total, done, cancel, pct, run: c["진행중"] || 0, ready: c["진행전"] || 0, wait: c["대기"] || 0, hold: c["연기"] || 0, decide: state.rows.filter(isDecide).length, soon };
+}
+
+/* ---- 렌더 ---- */
+function renderKpi(){
+  const k = kpis();
+  const box = document.getElementById("kpi");
+  box.innerHTML = [
+    `<div class="kpi__c"><b class="num">${k.pct}<small>%</small></b><span>전체 진행률 · ${k.done}/${k.total - k.cancel}건</span></div>`,
+    `<div class="kpi__c"><b class="num">${k.run}<small>건</small></b><span>진행 중 (진행전 ${k.ready}건)</span></div>`,
+    `<div class="kpi__c${k.decide ? " kpi__c--alert" : ""}"><b class="num">${k.decide}<small>건</small></b><span>대표님 결정·확인 대기</span></div>`,
+    `<div class="kpi__c"><b class="num">${k.soon}<small>건</small></b><span>마감 7일 이내</span></div>`
+  ].join("");
+  const segs = ["진행중","진행전","대기","연기","완료","취소"].filter(s => (counts()[s] || 0) > 0);
+  const c = counts();
+  document.getElementById("progBar").innerHTML = segs.map(s => {
+    const w = (c[s] / Math.max(1, state.rows.length)) * 100;
+    return `<i style="width:${w.toFixed(2)}%;background:${ST_COLOR[s]}" title="${s} ${c[s]}건"></i>`;
+  }).join("");
+  document.getElementById("progLegend").innerHTML = segs.map(s =>
+    `<span><em style="background:${ST_COLOR[s]}"></em>${s} <b>${c[s]}</b></span>`
+  ).join("") + `<span style="opacity:.8">합계 <b>${state.rows.length}</b></span>`;
+}
+
+function renderDecide(){
+  const items = state.rows.filter(isDecide).slice().sort((a,b) => {
+    const da = daysLeft(a["마감일"]), db = daysLeft(b["마감일"]);
+    if (da !== null && db !== null && da !== db) return da - db;
+    if (da !== null && db === null) return -1;
+    if (da === null && db !== null) return 1;
+    return (IMP_ORDER[a["중요도"]] ?? 9) - (IMP_ORDER[b["중요도"]] ?? 9);
+  });
+  const box = document.getElementById("decideBox");
+  document.getElementById("decideCount").textContent = items.length + "건 대기";
+  if (!items.length){
+    box.innerHTML = `<div class="empty">지금 대표님 결정을 기다리는 항목이 없습니다.</div>`;
+    return;
+  }
+  box.innerHTML = items.map(r => {
+    const n = daysLeft(r["마감일"]);
+    let cls = "dc";
+    let dueTxt = "";
+    if (n !== null){
+      if (n < 0){ cls += " dc--due"; dueTxt = "마감 " + Math.abs(n) + "일 지남"; }
+      else if (n === 0){ cls += " dc--due"; dueTxt = "오늘 마감"; }
+      else if (n <= 3){ cls += " dc--due"; dueTxt = "D-" + n; }
+      else if (n <= 7){ cls += " dc--mid"; dueTxt = "D-" + n; }
+      else dueTxt = "D-" + n;
+    }
+    return `<article class="${cls}">
+      <div class="dc__b">
+        <h3 class="dc__t">${esc(r["업무명"])}</h3>
+        <p class="dc__s">${esc(r["요약"])}</p>
+        <div class="dc__m">
+          <span class="st st--${esc(r["상태"])}">${esc(r["상태"])}</span>
+          <span style="color:${AREA_COLOR[r["영역"]] || "#586067"};font-weight:700">${esc(r["영역"])}</span>
+          <span>중요도 ${esc(r["중요도"])}</span>
+          <span>담당 ${esc(r["담당"])}</span>
+          ${dueTxt ? `<span style="font-weight:700">${dueTxt}</span>` : ""}
+        </div>
+      </div>
+      <span class="dc__k">${esc(r["ID"])}</span>
+    </article>`;
+  }).join("");
+}
+
+function chip(label, val, cur, color){
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "chip";
+  b.setAttribute("aria-pressed", String(cur === val));
+  b.innerHTML = (color ? `<i class="chip__dot" style="background:${color}"></i>` : "") + esc(label) +
+    (val === "all" ? "" : ` <b>${valCount(val)}</b>`);
+  return b;
+}
+let filterKind = "";
+function valCount(v){
+  if (filterKind === "status") return state.rows.filter(r => statusMatch(r, v)).length;
+  if (filterKind === "area") return state.rows.filter(r => r["영역"] === v).length;
+  if (filterKind === "owner") return state.rows.filter(r => r["담당"] === v).length;
+  return "";
+}
+function statusMatch(r, v){
+  if (v === "all") return true;
+  if (v === "취소·연기") return r["상태"] === "취소" || r["상태"] === "연기";
+  return r["상태"] === v;
+}
+function renderFilters(){
+  filterKind = "status";
+  const st = document.getElementById("statusFilters");
+  st.innerHTML = "";
+  [["전체","all"],["진행중","진행중"],["진행전","진행전"],["완료","완료"],["취소·연기","취소·연기"]].forEach(([lab,v]) => {
+    const b = chip(lab, v, state.status, v === "all" ? null : (ST_COLOR[v] || "#8B949B"));
+    b.addEventListener("click", () => { state.status = v; renderFilters(); renderList(); });
+    st.appendChild(b);
+  });
+  filterKind = "area";
+  const ar = document.getElementById("areaFilters");
+  ar.innerHTML = "";
+  const allArea = chip("영역 전체", "all", state.area, null);
+  allArea.addEventListener("click", () => { state.area = "all"; renderFilters(); renderList(); });
+  ar.appendChild(allArea);
+  AREA_ORDER.forEach(a => {
+    const b = chip(a, a, state.area, AREA_COLOR[a]);
+    b.addEventListener("click", () => { state.area = a; renderFilters(); renderList(); });
+    ar.appendChild(b);
+  });
+  filterKind = "owner";
+  const ow = document.getElementById("ownerFilters");
+  ow.innerHTML = "";
+  [["전체","all"],["피클","피클"],["대표님","대표님"],["공동","공동"]].forEach(([lab,v]) => {
+    const b = chip(lab, v, state.owner, null);
+    b.addEventListener("click", () => { state.owner = v; renderFilters(); renderList(); });
+    ow.appendChild(b);
+  });
+}
+
+function visible(){
+  const q = state.q.trim().toLowerCase();
+  return state.rows.filter(r =>
+    statusMatch(r, state.status) &&
+    (state.area === "all" || r["영역"] === state.area) &&
+    (state.owner === "all" || r["담당"] === state.owner) &&
+    (!q || (r["업무명"] + " " + r["요약"] + " " + r["영역"]).toLowerCase().includes(q))
+  );
+}
+
+function renderList(){
+  const rows = visible().slice().sort((a,b) => {
+    const so = (ST_ORDER[a["상태"]] ?? 9) - (ST_ORDER[b["상태"]] ?? 9);
+    if (so) return so;
+    const da = daysLeft(a["마감일"]), db = daysLeft(b["마감일"]);
+    if (da !== null && db !== null && da !== db) return da - db;
+    if (da !== null && db === null) return -1;
+    if (da === null && db !== null) return 1;
+    const io = (IMP_ORDER[a["중요도"]] ?? 9) - (IMP_ORDER[b["중요도"]] ?? 9);
+    if (io) return io;
+    return String(a["ID"]).localeCompare(String(b["ID"]));
+  });
+  const box = document.getElementById("list");
+  if (!rows.length){
+    box.innerHTML = `<div class="empty">조건에 맞는 업무가 없습니다. 필터를 바꿔 보세요.</div>`;
+    return;
+  }
+  const areas = AREA_ORDER.filter(a => rows.some(r => r["영역"] === a))
+    .concat([...new Set(rows.map(r => r["영역"]).filter(a => !AREA_ORDER.includes(a)))]);
+  box.innerHTML = areas.map(area => {
+    const list = rows.filter(r => r["영역"] === area);
+    const open = list.filter(isOpen).length;
+    return `<section class="grp">
+      <div class="grp__h">
+        <h3><i style="background:${AREA_COLOR[area] || "#703DFF"}"></i>${esc(area)}</h3>
+        <span>${list.length}건 · 진행 ${open}건</span>
+      </div>
+      <div class="rows">${list.map(rowHtml).join("")}</div>
+    </section>`;
+  }).join("");
+}
+
+function rowHtml(r){
+  const st = r["상태"];
+  const n = daysLeft(r["마감일"]);
+  let cls = "row", dueCls = "row__due", dueTxt = "", sub = "";
+  if (st === "완료") cls += " row--done";
+  if (st === "취소") cls += " row--cancel";
+  if (n !== null){
+    if (isOpen(r) && n < 0){ cls += " row--late"; dueCls += " row__due--soon"; dueTxt = Math.abs(n) + "일 지남"; sub = r["마감일"]; }
+    else if (isOpen(r) && n === 0){ cls += " row--late"; dueCls += " row__due--soon"; dueTxt = "오늘 마감"; sub = r["마감일"]; }
+    else if (isOpen(r) && n <= 3){ dueCls += " row__due--soon"; dueTxt = "D-" + n; sub = r["마감일"]; }
+    else if (isOpen(r) && n <= 7){ dueCls += " row__due--near"; dueTxt = "D-" + n; sub = r["마감일"]; }
+    else { dueTxt = "D-" + n; sub = r["마감일"]; }
+  }
+  return `<article class="${cls}">
+    <div class="row__st"><span class="st st--${esc(st)}">${esc(st)}</span></div>
+    <div class="row__b">
+      <h4 class="row__t">${esc(r["업무명"])}</h4>
+      ${r["요약"] ? `<p class="row__s">${esc(r["요약"])}</p>` : ""}
+      <div class="row__m">
+        <span class="imp imp--${esc(r["중요도"])}">중요도 ${esc(r["중요도"])}</span>
+        <span class="tag">${esc(r["담당"])}</span>
+        ${(r["대표확인"] || "").toUpperCase() === "Y" && isOpen(r) ? `<span class="need"><i></i>대표님 확인</span>` : ""}
+      </div>
+    </div>
+    ${dueTxt ? `<div class="${dueCls}">${dueTxt}${sub ? `<em>${esc(sub)}</em>` : ""}</div>` : `<div class="row__due"></div>`}
+  </article>`;
+}
+
+function renderSrc(){
+  const el = document.getElementById("src");
+  const k = kpis();
+  if (state.live){
+    el.className = "src";
+    el.innerHTML = `<i></i><span>구글 시트 연결됨 · ${state.synced} 확인 · ${state.rows.length}건</span>`;
+  } else {
+    el.className = "src src--warn";
+    el.innerHTML = `<i></i><span>시트 연결 실패 — 내장 스냅샷(${BUILT} 기준) 표시 중</span> <button type="button" id="retry">다시 시도</button>`;
+    const b = document.getElementById("retry");
+    if (b) b.addEventListener("click", () => { document.getElementById("src").innerHTML = `<i></i><span>시트 확인 중…</span>`; boot(); });
+  }
+  document.getElementById("footMeta").textContent =
+    `업무 ${k.total}건 · 완료 ${k.done} · 취소 ${k.cancel} · 화면 갱신 ${state.synced || "내장 스냅샷"} (빌드 ${BUILT})`;
+}
+
+function renderAll(){
+  renderKpi(); renderDecide(); renderFilters(); renderList(); renderSrc();
+}
+
+function applyRows(rows){ state.rows = rows; renderAll(); }
+
+async function boot(){
+  if (!state.rows.length) applyRows(SNAPSHOT);
+  try{
+    const rows = await loadCSV();
+    state.live = true;
+    const d = new Date();
+    state.synced = pad(d.getHours()) + ":" + pad(d.getMinutes());
+    applyRows(rows);
+  } catch(e){
+    state.live = false;
+    state.synced = null;
+    if (!state.rows.length) state.rows = SNAPSHOT;
+    renderAll();
+  }
+}
+
+document.getElementById("todayLabel").textContent = (() => { const d = new Date(); return `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일(${WD[d.getDay()]})`; })();
+document.getElementById("q").addEventListener("input", e => { state.q = e.target.value; renderList(); });
+document.getElementById("reset").addEventListener("click", () => {
+  state.q = ""; state.status = "all"; state.area = "all"; state.owner = "all";
+  document.getElementById("q").value = "";
+  renderAll();
+});
+state.rows = SNAPSHOT;
+renderAll();
+boot();
+setInterval(() => { if (document.visibilityState === "visible") boot(); }, 300000);
+</script>
+</body>
+</html>
