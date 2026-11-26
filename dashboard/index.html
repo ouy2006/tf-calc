@@ -81,6 +81,13 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .kpi__c--alert{background:rgba(177,253,7,.94);border-color:var(--neon);color:#243000}
 .kpi__c--alert span{color:#3E4E00}
 
+/* notice strip */
+.notice{background:var(--tint);border-bottom:1px solid var(--line)}
+.notice__in{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;padding:9px 0;font-size:12px;color:var(--muted);line-height:1.5}
+.notice__in b{color:var(--ink)}
+.notice__in a{color:var(--purple);font-weight:700;white-space:nowrap}
+.notice__in a:hover{text-decoration:underline}
+
 /* section */
 .sec{padding:26px 0 6px}
 .sec--tint{background:var(--tint);padding-bottom:26px}
@@ -257,6 +264,13 @@ select.fsel{height:30px;border:1px solid var(--line2);border-radius:100px;backgr
 </section>
 
 <main>
+  <section class="notice">
+    <div class="wrap notice__in">
+      <span><b>데이터 편집은 구글 시트에서</b> — 이 화면은 시트를 읽어 그립니다.</span>
+      <a href="https://docs.google.com/spreadsheets/d/1mavEdEhh6a_5nYTtmDIDVZ31iI0PUYVDrWZLGwc-T3Q/edit" target="_blank" rel="noopener">구글 시트 열기 ↗</a>
+      <span style="opacity:.8">데스크 매니저는 시트 우상단 <b>공유</b>에서 이메일을 넣고 <b>편집자</b>로 초대하면 됩니다.</span>
+    </div>
+  </section>
   <section class="sec" id="calendar">
     <div class="wrap">
       <div class="sec__head">
@@ -333,7 +347,7 @@ select.fsel{height:30px;border:1px solid var(--line2);border-radius:100px;backgr
           <h2>채널 바로가기</h2>
           <p>각 채널의 관리 화면으로 바로 갑니다.</p>
         </div>
-        <div class="sec__tools"><a class="chip" href="#calendar">＋ 콘텐츠 추가는 시트에서</a></div>
+        <div class="sec__tools"><a class="chip" href="https://docs.google.com/spreadsheets/d/1mavEdEhh6a_5nYTtmDIDVZ31iI0PUYVDrWZLGwc-T3Q/edit#gid=0" target="_blank" rel="noopener">＋ 콘텐츠 추가는 시트에서 ↗</a></div>
       </div>
       <div class="cards" id="cards"></div>
     </div>
