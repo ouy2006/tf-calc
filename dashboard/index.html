@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>테니스판타지 | 홍보 통합 대시보드</title>
+<meta name="description" content="테니스판타지 홍보 채널 8개를 한 화면에서 관리하는 통합 대시보드. 이번 주 콘텐츠 캘린더, 오늘 할 일, 문의 응대, 채널 바로가기, 성과 요약." />
+<meta name="theme-color" content="#703DFF" />
+<meta name="robots" content="noindex" />
+<link rel="icon" href="images/brand/favicon.svg" type="image/svg+xml" />
+<style>
+@font-face{font-family:"Syne";src:url("fonts/Syne-latin.woff2") format("woff2");font-weight:400 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Spoqa Han Sans Neo";src:url("fonts/SpoqaHanSansNeo-Regular.woff2") format("woff2");font-weight:400;font-display:swap}
+@font-face{font-family:"Spoqa Han Sans Neo";src:url("fonts/SpoqaHanSansNeo-Medium.woff2") format("woff2");font-weight:500;font-display:swap}
+@font-face{font-family:"Spoqa Han Sans Neo";src:url("fonts/SpoqaHanSansNeo-Bold.woff2") format("woff2");font-weight:700 800;font-display:swap}
+
+:root{
+  --purple:#703DFF; --purple-hover:#5A2BD6; --deep:#411199; --dark:#31096F;
+  --ink:#24272A; --muted:#586067; --gray:#97A3AE; --lgray:#D8DFE1; --lpurple:#C5B4E2;
+  --neon:#B1FD07; --tint:#F4F1FF; --tint2:#EDE7FF; --white:#fff;
+  --line:rgba(36,39,42,.14); --line2:rgba(36,39,42,.28);
+  --latin:"Syne","Spoqa Han Sans Neo",system-ui,sans-serif;
+  --kr:"Spoqa Han Sans Neo","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --max:1240px; --hdr:56px;
+  --sh:0 20px 50px -40px rgba(49,9,111,.6);
+  --c-insta:#703DFF; --c-blog:#03C75A; --c-talk:#00A05A; --c-place:#0B7A45;
+  --c-kakao:#FEE500; --c-home:#7BD400; --c-fb:#1877F2;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--white);color:var(--ink);font-family:var(--kr);font-size:15px;line-height:1.6;letter-spacing:-.012em;word-break:keep-all;overflow-wrap:break-word;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+p,h1,h2,h3,h4{margin:0}
+h1,h2,h3,h4{line-height:1.2;letter-spacing:-.03em;font-weight:700}
+ul{margin:0;padding:0;list-style:none}
+button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
+:focus-visible{outline:2px solid var(--purple);outline-offset:2px}
+.wrap{width:min(100% - 32px,var(--max));margin-inline:auto}
+.nowrap{white-space:nowrap}
+.num{font-family:var(--latin);font-variant-numeric:tabular-nums;font-weight:700;letter-spacing:-.02em}
+
+/* header */
+.hdr{position:sticky;top:0;z-index:60;background:rgba(255,255,255,.96);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.hdr__in{display:flex;align-items:center;gap:12px;height:var(--hdr)}
+.hdr__logo{width:112px;height:auto;flex:none}
+.hdr__tag{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--purple);padding-left:11px;border-left:1px solid var(--line);font-family:var(--latin)}
+.hdr__sp{flex:1}
+@media(max-width:560px){.hdr__tag{display:none}.hdr__logo{width:96px}}
+.hdr__btn{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border:1px solid var(--line2);border-radius:2px;font-size:12px;font-weight:700;white-space:nowrap}
+.hdr__btn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* subnav */
+.subnav{position:sticky;top:var(--hdr);z-index:55;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line)}
+.subnav ul{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.subnav ul::-webkit-scrollbar{display:none}
+.subnav a{display:block;padding:10px 9px;font-size:12.5px;font-weight:500;color:var(--muted);white-space:nowrap;border-bottom:2px solid transparent}
+.subnav a:hover{color:var(--purple);border-bottom-color:var(--purple)}
+
+/* hero */
+.hero{background:var(--purple);color:#fff;padding:20px 0 22px;position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;inset:0;background:radial-gradient(60% 120% at 88% 10%,rgba(177,253,7,.28),rgba(112,61,255,0) 62%);pointer-events:none}
+.hero__in{position:relative;z-index:1}
+.hero__top{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:flex-end;justify-content:space-between}
+.hero h1{font-size:clamp(20px,5vw,30px)}
+.hero h1 span{font-family:var(--latin);font-weight:400;opacity:.6;font-size:.62em;letter-spacing:.06em;margin-left:8px}
+.hero__date{font-size:12px;color:rgba(255,255,255,.8)}
+.hero__date b{font-weight:700;color:#fff}
+.src{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:11px;font-weight:700;padding:4px 9px;border:1px solid rgba(255,255,255,.4);border-radius:100px;color:#fff}
+.src i{width:6px;height:6px;border-radius:50%;background:var(--neon);display:block}
+.src--warn{border-color:rgba(177,253,7,.9);background:rgba(177,253,7,.18)}
+.src--warn i{background:#FFD84D}
+
+/* KPI */
+.kpi{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:16px}
+@media(min-width:760px){.kpi{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.kpi__c{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.24);padding:10px 12px;border-radius:2px;min-width:0}
+.kpi__c b{display:block;font-family:var(--kr);font-variant-numeric:tabular-nums;font-size:23px;line-height:1.15;font-weight:800;letter-spacing:-.03em}
+.kpi__c b small{font-size:12px;font-weight:700;margin-left:2px;opacity:.75}
+.kpi__c span{display:block;margin-top:4px;font-size:11px;color:rgba(255,255,255,.82);font-weight:500}
+.kpi__c--alert{background:rgba(177,253,7,.94);border-color:var(--neon);color:#243000}
+.kpi__c--alert span{color:#3E4E00}
+
+/* section */
+.sec{padding:26px 0 6px}
+.sec--tint{background:var(--tint);padding-bottom:26px}
+.sec__head{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:flex-end;border-top:1px solid var(--line);padding-top:14px;margin-bottom:14px;position:relative}
+.sec__head::before{content:"";position:absolute;top:-1px;left:0;width:52px;height:1px;background:var(--purple)}
+.sec__head h2{font-size:clamp(18px,4.2vw,24px)}
+.sec__head .eyebrow{display:block;font-family:var(--latin);font-size:10px;font-weight:700;letter-spacing:.24em;text-transform:uppercase;color:var(--purple);margin-bottom:5px}
+.sec__head p{font-size:12.5px;color:var(--muted);margin-top:6px;max-width:60ch}
+.sec__tools{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+
+/* week nav */
+.wk{display:inline-flex;align-items:center;gap:0;border:1px solid var(--line2);border-radius:2px;overflow:hidden;background:#fff}
+.wk button{width:34px;height:32px;display:grid;place-items:center;font-size:14px;color:var(--muted)}
+.wk button:hover{background:var(--tint);color:var(--purple)}
+.wk span{font-size:12px;font-weight:700;padding:0 8px;white-space:nowrap;font-family:var(--latin)}
+
+/* filters */
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{display:inline-flex;align-items:center;gap:5px;height:30px;padding:0 11px;border:1px solid var(--line2);border-radius:100px;font-size:12px;font-weight:500;background:#fff;color:var(--muted);white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff;font-weight:700}
+.chip__dot{width:7px;height:7px;border-radius:50%;display:block}
+select.fsel{height:30px;border:1px solid var(--line2);border-radius:100px;background:#fff;padding:0 26px 0 11px;font-size:12px;color:var(--muted);appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6'><path d='M1 1l4 4 4-4' fill='none' stroke='%23586067' stroke-width='1.4'/></svg>");background-repeat:no-repeat;background-position:right 10px center}
+
+/* calendar */
+.week{display:grid;grid-template-columns:1fr;gap:10px}
+@media(min-width:980px){.week{grid-template-columns:repeat(7,minmax(0,1fr));gap:8px;align-items:start}}
+.day{min-width:0;border:1px solid var(--line);border-radius:3px;background:#fff;overflow:hidden}
+@media(min-width:980px){.day{min-height:120px}}
+.day--today{border-color:var(--purple);box-shadow:0 0 0 1px var(--purple) inset}
+.day--weekend .day__h{background:#FAFAFB}
+.day__h{display:flex;align-items:baseline;gap:6px;padding:7px 9px;border-bottom:1px solid var(--line);background:var(--tint)}
+.day--today .day__h{background:var(--purple);color:#fff}
+.day__h b{font-size:12.5px}
+.day__h span{font-size:11px;color:var(--muted);font-family:var(--latin)}
+.day--today .day__h span{color:rgba(255,255,255,.8)}
+.day__b{padding:7px;display:grid;gap:6px}
+.day__empty{font-size:11px;color:var(--gray);padding:2px 2px 4px}
+@media(max-width:979px){
+  .day--empty{display:flex;align-items:center;justify-content:space-between}
+  .day--empty .day__h{border-bottom:0;background:transparent;flex:1;padding:8px 10px}
+  .day--empty .day__b{padding:8px 10px;flex:none}
+  .day__empty{padding:0}
+}
+.cc{border-left:3px solid var(--ch,var(--purple));background:#fff;border-top:1px solid var(--line);border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:7px 8px;border-radius:0 2px 2px 0;min-width:0}
+.cc__top{display:flex;align-items:center;gap:5px;justify-content:space-between;min-width:0}
+.cc__ch{font-size:10px;font-weight:700;color:var(--ch,var(--purple));white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.cc__t{font-size:12.5px;font-weight:500;line-height:1.4;margin-top:4px;color:var(--ink)}
+.cc__m{display:flex;flex-wrap:wrap;gap:4px 6px;margin-top:5px;font-size:10.5px;color:var(--muted)}
+.cc__b{background:var(--tint2);color:var(--deep);padding:1px 5px;border-radius:2px;font-weight:700}
+.st{font-size:9.5px;font-weight:700;padding:1px 5px;border-radius:2px;white-space:nowrap;flex:none}
+.st[data-s="게시"]{background:var(--neon);color:#243000}
+.st[data-s="예약"]{background:#E4F3FF;color:#0B5A8A}
+.st[data-s="제작"]{background:#FFF3C4;color:#6B5200}
+.st[data-s="기획"]{background:#EDE7FF;color:var(--deep)}
+.st[data-s="보류"]{background:#EEF0F2;color:#5B646B}
+
+/* today list */
+.todo{display:grid;gap:8px}
+@media(min-width:880px){.todo{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.ti{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:3px;padding:10px 12px;min-width:0}
+.ti__d{flex:none;font-size:10.5px;font-weight:700;text-align:center;min-width:46px;color:var(--muted);border-right:1px solid var(--line);padding-right:8px;font-variant-numeric:tabular-nums}
+.ti__d b{display:block;font-size:13px;color:var(--ink)}
+.ti__d--late b{color:#C2185B}
+.ti__d--today b{color:var(--purple)}
+.ti__b{min-width:0;flex:1}
+.ti__t{font-size:13.5px;font-weight:700;line-height:1.35}
+.ti__m{display:flex;flex-wrap:wrap;gap:4px 7px;align-items:center;margin-top:4px;font-size:11px;color:var(--muted)}
+.ti__ch{display:inline-flex;align-items:center;gap:4px;font-weight:700;color:var(--ink)}
+.ti__ch i{width:7px;height:7px;border-radius:50%;background:var(--ch,var(--purple));display:block}
+.ti__a{display:inline-flex;align-items:center;height:26px;padding:0 9px;border:1px solid var(--line2);border-radius:2px;font-size:11px;font-weight:700;flex:none}
+.ti__a:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* inquiry */
+.inq{display:grid;gap:12px}
+@media(min-width:860px){.inq{grid-template-columns:260px minmax(0,1fr)}}
+.inq__n{background:var(--ink);color:#fff;padding:16px 18px;border-radius:3px;display:flex;flex-direction:column;justify-content:center}
+.inq__n em{font-style:normal;font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--neon);font-family:var(--latin)}
+.inq__n b{font-family:var(--kr);font-variant-numeric:tabular-nums;font-size:42px;line-height:1.05;margin-top:6px;font-weight:800}
+.inq__n b small{font-size:14px;margin-left:3px;font-weight:700;opacity:.7}
+.inq__n span{font-size:11.5px;color:rgba(255,255,255,.7);margin-top:6px}
+.inq__links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+@media(min-width:640px){.inq__links{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.il{display:flex;flex-direction:column;justify-content:center;gap:2px;min-height:62px;padding:10px 12px;border:1px solid var(--line2);border-radius:3px;background:#fff;min-width:0}
+.il:hover{border-color:var(--purple);background:var(--tint)}
+.il b{font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px}
+.il b i{width:8px;height:8px;border-radius:2px;display:block;flex:none}
+.il span{font-size:10.5px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.il--sheet{background:var(--purple);border-color:var(--purple);color:#fff}
+.il--sheet span{color:rgba(255,255,255,.78)}
+.il--sheet:hover{background:var(--purple-hover);border-color:var(--purple-hover)}
+.privacy{margin-top:10px;font-size:11.5px;color:var(--muted);display:flex;gap:6px;align-items:flex-start;line-height:1.5}
+.privacy svg{flex:none;margin-top:2px}
+
+/* channel cards */
+.cards{display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:700px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(min-width:1040px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.card{border:1px solid var(--line);border-radius:3px;padding:14px;background:#fff;display:flex;flex-direction:column;min-width:0}
+.card__h{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card__t{font-size:14px;font-weight:700;display:flex;align-items:center;gap:7px;min-width:0}
+.card__t i{width:9px;height:9px;border-radius:2px;flex:none;background:var(--ch,var(--purple))}
+.card__s{font-size:11px;color:var(--muted);margin-top:3px}
+.card__go{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:10px;font-size:12px;font-weight:700;color:var(--purple);border-top:1px solid var(--line);padding-top:9px}
+.card__go:hover{color:var(--purple-hover)}
+.card__go .arw{font-family:var(--latin);font-size:14px}
+.subs{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.subs a{display:inline-flex;align-items:center;height:30px;padding:0 10px;border:1px solid var(--line2);border-radius:2px;font-size:11.5px;font-weight:700;background:#fff}
+.subs a:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+.badge-need{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:2px;font-size:10.5px;font-weight:700;background:#FFF3C4;color:#6B5200;white-space:nowrap}
+.badge-ok{display:inline-flex;align-items:center;height:22px;padding:0 8px;border-radius:2px;font-size:10.5px;font-weight:700;background:rgba(177,253,7,.3);color:#3E4E00;white-space:nowrap}
+.card--muted{background:#FAFAFB}
+
+/* performance */
+.perf{display:grid;gap:10px}
+@media(min-width:860px){.perf{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.pw{border:1px solid var(--line);border-radius:3px;padding:14px;background:#fff}
+.pw__h{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:10px}
+.pw__h b{font-size:13.5px}
+.pw__h span{font-size:11px;color:var(--muted);font-family:var(--latin)}
+.pb{display:grid;gap:8px}
+.pb__r{display:grid;grid-template-columns:88px minmax(0,1fr) 62px;gap:8px;align-items:center;min-width:0}
+.pb__l{font-size:11px;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:5px;min-width:0}
+.pb__l i{width:7px;height:7px;border-radius:50%;flex:none;background:var(--ch,var(--purple))}
+.pb__bar{height:9px;background:var(--tint2);border-radius:100px;overflow:hidden}
+.pb__bar span{display:block;height:100%;background:var(--ch,var(--purple));border-radius:100px}
+.pb__v{font-size:11.5px;font-variant-numeric:tabular-nums;font-weight:700;text-align:right;color:var(--ink);white-space:nowrap}
+.pb__v em{font-style:normal;font-family:var(--kr);font-size:10.5px;color:var(--muted);font-weight:500;margin-left:3px}
+.sumt{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px;padding-top:10px;border-top:1px solid var(--line);font-size:11.5px;color:var(--muted)}
+.sumt b{color:var(--ink);font-family:var(--latin);font-size:13px}
+
+/* footer */
+.ft{border-top:1px solid var(--line);margin-top:26px;padding:20px 0 40px;background:#FAFAFB}
+.ft__note{font-size:12px;color:var(--muted);line-height:1.7;max-width:80ch}
+.ft__note b{color:var(--ink)}
+.ft__row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;margin-top:14px}
+.ft__row small{font-size:11px;color:var(--gray)}
+.ft__row a{font-size:11.5px;font-weight:700;color:var(--purple)}
+.empty{padding:24px;text-align:center;color:var(--muted);font-size:12.5px;border:1px dashed var(--line2);border-radius:3px}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="wrap hdr__in">
+    <img class="hdr__logo" src="images/brand/logo-wordmark.svg" alt="TENNIS FANTASY" width="112" height="10" />
+    <span class="hdr__tag">Promo Console</span>
+    <span class="hdr__sp"></span>
+    <a class="hdr__btn" href="https://docs.google.com/spreadsheets/d/1mavEdEhh6a_5nYTtmDIDVZ31iI0PUYVDrWZLGwc-T3Q/edit" target="_blank" rel="noopener">시트 열기 <span aria-hidden="true">↗</span></a>
+  </div>
+</header>
+
+<nav class="subnav" aria-label="대시보드 섹션">
+  <div class="wrap">
+    <ul>
+      <li><a href="#calendar">캘린더</a></li>
+      <li><a href="#today">할 일</a></li>
+      <li><a href="#inquiry">문의</a></li>
+      <li><a href="#channels">채널</a></li>
+      <li><a href="#perf">성과</a></li>
+    </ul>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="wrap hero__in">
+    <div class="hero__top">
+      <h1>홍보 통합 대시보드<span>TF · 8 CH</span></h1>
+      <div class="hero__date"><b id="todayLabel">—</b> 기준</div>
+    </div>
+    <div class="kpi" id="kpi"></div>
+    <div class="src" id="src"><i></i><span>데이터 확인 중…</span></div>
+  </div>
+</section>
+
+<main>
+  <section class="sec" id="calendar">
+    <div class="wrap">
+      <div class="sec__head">
+        <div>
+          <span class="eyebrow">Content Calendar</span>
+          <h2>콘텐츠 캘린더</h2>
+          <p>채널 8개 · 지점 5개를 한 주 단위로 봅니다. 카카오 채널은 지점으로 구분해 기록합니다.</p>
+        </div>
+        <div class="sec__tools">
+          <div class="wk"><button type="button" id="prevWk" aria-label="지난 주">‹</button><span id="wkLabel">—</span><button type="button" id="nextWk" aria-label="다음 주">›</button></div>
+        </div>
+      </div>
+      <div class="filters" id="chFilters" role="group" aria-label="채널 필터"></div>
+      <div class="filters">
+        <select class="fsel" id="brFilter" aria-label="지점 필터">
+          <option value="all">지점 전체</option>
+          <option value="반포">반포</option>
+          <option value="남강">남강</option>
+          <option value="동작">동작</option>
+          <option value="방배">방배</option>
+          <option value="삼성">삼성</option>
+          <option value="공통">공통</option>
+        </select>
+        <button type="button" class="chip" id="resetWk">이번 주로</button>
+      </div>
+      <div class="week" id="week" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="today">
+    <div class="wrap">
+      <div class="sec__head">
+        <div>
+          <span class="eyebrow">To Do</span>
+          <h2>오늘 할 일</h2>
+          <p>기획·제작·예약 상태이거나, 게시 예정일이 지난 항목을 위로 모았습니다.</p>
+        </div>
+      </div>
+      <div class="todo" id="todo"></div>
+    </div>
+  </section>
+
+  <section class="sec sec--tint" id="inquiry">
+    <div class="wrap">
+      <div class="sec__head">
+        <div>
+          <span class="eyebrow">Inquiry Desk</span>
+          <h2>문의 응대</h2>
+          <p>카카오 채널 4개와 네이버 톡톡으로 바로 들어갑니다. 회원 이름과 문의 내용은 구글 시트에서만 확인합니다.</p>
+        </div>
+      </div>
+      <div class="inq">
+        <div class="inq__n">
+          <em>Unanswered</em>
+          <b id="unanswered">–<small>건</small></b>
+          <span>미답변 문의 · 답변중은 시트에서</span>
+        </div>
+        <div>
+          <div class="inq__links" id="inqLinks"></div>
+          <p class="privacy">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#703DFF" stroke-width="2.4"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 118 0v3"/></svg>
+            <span>이 페이지는 공개 주소입니다. 회원 이름·문의 내용은 여기에 표시하지 않으며, 개인정보가 담긴 <b>문의응대</b> 탭은 웹에 게시하지 않았습니다.</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="channels">
+    <div class="wrap">
+      <div class="sec__head">
+        <div>
+          <span class="eyebrow">Channels</span>
+          <h2>채널 바로가기</h2>
+          <p>각 채널의 관리 화면으로 바로 갑니다.</p>
+        </div>
+        <div class="sec__tools"><a class="chip" href="#calendar">＋ 콘텐츠 추가는 시트에서</a></div>
+      </div>
+      <div class="cards" id="cards"></div>
+    </div>
+  </section>
+
+  <section class="sec" id="perf">
+    <div class="wrap">
+      <div class="sec__head">
+        <div>
+          <span class="eyebrow">Performance</span>
+          <h2>성과 요약</h2>
+          <p>주차별 채널 조회수와 문의 건수입니다.</p>
+        </div>
+      </div>
+      <div class="perf" id="perf"></div>
+    </div>
+  </section>
+</main>
+
+<footer class="ft">
+  <div class="wrap">
+    <p class="ft__note">
+      <b>데이터 편집은 구글 시트에서.</b> 이 화면은 시트의 <b>콘텐츠캘린더 · 성과 · 채널정보 · 공개요약</b> 탭을 읽어 그립니다.
+      시트를 고치면 몇 분 안에 이 화면에도 반영됩니다(구글 캐시). 데스크 매니저에게는 시트 오른쪽 위 <b>공유</b>에서 이메일을 넣고 <b>편집자</b>로 초대하면 됩니다.
+    </p>
+    <p class="ft__note" style="margin-top:10px">
+      <b>자동 발행은 하지 않습니다.</b> 인스타그램·페이스북은 Meta 앱 심사와 비즈니스 계정 연동이, 네이버 블로그는 공식 발행 API가 필요해 이 대시보드로 바로 올릴 수 없습니다.
+      이 화면은 <b>관리·기록·바로가기</b>용이며, 실제 발행은 각 채널 관리 화면에서 합니다.
+    </p>
+    <div class="ft__row">
+      <small>테니스판타지 홍보 대시보드 v1 · 반포 · 남강 · 동작 · 방배 · 삼성</small>
+      <a href="https://docs.google.com/spreadsheets/d/1mavEdEhh6a_5nYTtmDIDVZ31iI0PUYVDrWZLGwc-T3Q/edit" target="_blank" rel="noopener">시트에서 편집 ↗</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   테니스판타지 홍보 통합 대시보드 v1
+   데이터: 구글 시트 "테니스판타지 홍보 대시보드" (웹에 게시된 4개 탭 CSV)
+   문의응대 탭은 게시하지 않음(개인정보). 화면에는 건수만 표시.
+   ============================================================ */
+const SHEET_ID = "1mavEdEhh6a_5nYTtmDIDVZ31iI0PUYVDrWZLGwc-T3Q";
+const PUB = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQ6JQcufp6l8I1ChqQOwQrGT9SozeYuiGv19XM-4l7gJHK7_l8NVf0jCqsgPpdy21O4pDOoZaQPtFki/pub?single=true&output=csv&gid=";
+const SHEET = { cal:"0", perf:"2043596377", ch:"519063813", sum:"829911645" };
+const SHEET_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/edit";
+const INQ_SHEET_URL = "https://docs.google.com/spreadsheets/d/" + SHEET_ID + "/edit#gid=266599409";
+
+/* ---- 채널 정의 ---- */
+const CH = {
+  "홈페이지":            { g:"홈페이지", color:"#7BD400" },
+  "인스타그램":          { g:"인스타",   color:"#703DFF" },
+  "페이스북":            { g:"페이스북", color:"#1877F2" },
+  "네이버 블로그":       { g:"블로그",   color:"#03C75A" },
+  "네이버 톡톡":         { g:"네이버",   color:"#00A05A" },
+  "네이버 플레이스 소식": { g:"네이버",   color:"#0B7A45" },
+  "카카오톡 채널":       { g:"카카오",   color:"#E6C200" }
+};
+const chColor = n => (CH[n] || {}).color || "#703DFF";
+const chGroup = n => (CH[n] || {}).g || "기타";
+const FILTERS = [
+  { k:"all", label:"전체" }, { k:"인스타", label:"인스타", color:"#703DFF" },
+  { k:"블로그", label:"블로그", color:"#03C75A" }, { k:"카카오", label:"카카오", color:"#E6C200" },
+  { k:"네이버", label:"네이버", color:"#00A05A" }, { k:"홈페이지", label:"홈페이지", color:"#7BD400" },
+  { k:"페이스북", label:"페이스북", color:"#1877F2" }
+];
+const WEEKDAY = ["일","월","화","수","목","금","토"];
+
+/* ---- 폴백 예시 데이터 (시트를 읽지 못할 때) ---- */
+const FALLBACK = {
+  cal: [
+    ["2026-11-20","목","인스타그램","동작","동작 오전 레슨 현장","릴스","제작","원장",""],
+    ["2026-11-22","토","네이버 블로그","반포","반포 시설 투어 후기","블로그","게시","데스크(반포)","https://blog.naver.com/erachacha2021"],
+    ["2026-11-23","월","인스타그램","반포","테생이 입문반 11월 오픈","릴스","게시","데스크(반포)","https://instagram.com/koreantalllee"],
+    ["2026-11-24","화","네이버 블로그","공통","11월 신규 회원 후기 모음","블로그","제작","데스크(방배)",""],
+    ["2026-11-25","수","카카오톡 채널","동작","12월 레슨 시간표 오픈 안내","친구톡","게시","원장","https://pf.kakao.com/_jxkxaxhn"],
+    ["2026-11-26","목","네이버 플레이스 소식","삼성","해피아워 할인 소식","플레이스 소식","예약","데스크(삼성)","https://map.naver.com/p/entry/place/1228394731"],
+    ["2026-11-27","금","인스타그램","방배","노애러클럽 주말 모임 모집","피드","제작","데스크(방배)",""],
+    ["2026-11-28","토","네이버 톡톡","방배","주말 예약 마감 안내","공지","기획","데스크(방배)","https://talk.naver.com/WA1NQGX"],
+    ["2026-11-29","일","홈페이지","공통","2027 수강료 안내 공지","공지","기획","원장","https://ouy2006.github.io/tf-calc/homepage/"],
+    ["2026-11-30","월","카카오톡 채널","반포","12월 테생이 모집","채널소식","기획","데스크(반포)","https://pf.kakao.com/_xhumzs"],
+    ["2026-12-01","화","네이버 블로그","남강","남강 1~5면 반값 후기","블로그","기획","데스크(남강)",""],
+    ["2026-12-02","수","인스타그램","삼성","테린이 첫 레슨 브이로그","릴스","기획","데스크(삼성)",""],
+    ["2026-12-03","목","네이버 플레이스 소식","방배","연말 클럽 일정 안내","플레이스 소식","기획","데스크(방배)","https://map.naver.com/p/entry/place/1537865054"],
+    ["2026-12-04","금","페이스북","공통","페이지 개설 및 첫 소식","공지","보류","원장",""],
+    ["2026-12-05","토","카카오톡 채널","삼성","연말 단체 레슨 안내","친구톡","기획","데스크(삼성)","https://pf.kakao.com/_XelyG"]
+  ],
+  perf: [
+    ["11/17~11/23","인스타그램","18400","7","릴스 2편"],
+    ["11/17~11/23","네이버 블로그","5200","5","후기 글 3편"],
+    ["11/17~11/23","네이버 플레이스","3100","11","리뷰 4건 신규"],
+    ["11/17~11/23","카카오톡 채널","2600","14","친구톡 1회"],
+    ["11/17~11/23","홈페이지","980","2",""],
+    ["11/24~11/30","인스타그램","12300","4","집계 중"],
+    ["11/24~11/30","네이버 블로그","2900","3","집계 중"],
+    ["11/24~11/30","네이버 플레이스","1700","6","집계 중"],
+    ["11/24~11/30","카카오톡 채널","1300","8","집계 중"],
+    ["11/24~11/30","홈페이지","410","1","집계 중"]
+  ],
+  ch: [
+    ["테니스판타지 홈페이지","홈페이지","공통","https://ouy2006.github.io/tf-calc/homepage/","원장","임시 주소(Pages 미활성). 정식 주소 https://ouy2006.github.io/tf-homepage/ 로 교체 예정"],
+    ["인스타그램","SNS","공통","https://instagram.com/koreantalllee","원장","회원 모집·차박 콘텐츠"],
+    ["페이스북 페이지","SNS","공통","주소 확인 필요","원장","페이지 주소 미확인 — 확인 후 이 칸에 입력"],
+    ["네이버 블로그","블로그","공통","https://blog.naver.com/erachacha2021","원장","블로그 글 발행. 플레이스 소식과 별개 채널"],
+    ["네이버 톡톡","톡톡","방배","https://talk.naver.com/WA1NQGX","데스크(방배)","방배점 상담 채널"],
+    ["카카오톡 채널 (반포)","카카오","반포","https://pf.kakao.com/_xhumzs","데스크(반포)","1:1 채팅·채널소식"],
+    ["카카오톡 채널 (동작)","카카오","동작","https://pf.kakao.com/_jxkxaxhn","데스크(동작)","1:1 채팅·친구톡"],
+    ["카카오톡 채널 (방배)","카카오","방배","https://pf.kakao.com/_TYdxfb","데스크(방배)","1:1 채팅·친구톡"],
+    ["카카오톡 채널 (삼성)","카카오","삼성","https://pf.kakao.com/_XelyG","데스크(삼성)","1:1 채팅·친구톡"],
+    ["네이버 플레이스 소식 (반포)","플레이스","반포","https://map.naver.com/p/entry/place/1768264652","데스크(반포)","스마트플레이스에서 소식 발행"],
+    ["네이버 플레이스 소식 (남강)","플레이스","남강","https://map.naver.com/p/entry/place/2049267102","데스크(남강)","'남강테니스타운' 명의 플레이스. 소식 탭 없음"],
+    ["네이버 플레이스 소식 (동작)","플레이스","동작","https://map.naver.com/p/entry/place/1660295800","데스크(동작)","동작주차공원 테니스장(동작구 공공코트)"],
+    ["네이버 플레이스 소식 (방배)","플레이스","방배","https://map.naver.com/p/entry/place/1537865054","데스크(방배)","스마트플레이스에서 소식 발행"],
+    ["네이버 플레이스 소식 (삼성)","플레이스","삼성","https://map.naver.com/p/entry/place/1228394731","데스크(삼성)","스마트플레이스에서 소식 발행"]
+  ],
+  sum: [["미답변 문의","2"],["답변중 문의","2"],["이번 주 게시 예정","3"],["남은 작업(기획·제작·예약)","11"]]
+};
+
+/* ---- CSV ---- */
+function parseCSV(text){
+  const rows = []; let row = [], cur = "", q = false;
+  for (let i = 0; i < text.length; i++){
+    const c = text[i];
+    if (q){
+      if (c === '"'){ if (text[i+1] === '"'){ cur += '"'; i++; } else q = false; }
+      else cur += c;
+    } else if (c === '"'){ q = true; }
+    else if (c === ","){ row.push(cur); cur = ""; }
+    else if (c === "\n"){ row.push(cur); rows.push(row); row = []; cur = ""; }
+    else if (c === "\r"){ /* skip */ }
+    else cur += c;
+  }
+  if (cur !== "" || row.length){ row.push(cur); rows.push(row); }
+  return rows.filter(r => r.some(v => v.trim() !== ""));
+}
+function toObjs(rows){
+  if (!rows.length) return [];
+  const head = rows[0].map(h => h.trim());
+  return rows.slice(1).map(r => {
+    const o = {}; head.forEach((h, i) => o[h] = (r[i] ?? "").trim()); return o;
+  });
+}
+async function loadCSV(gid){
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), 9000);
+  try{
+    const res = await fetch(PUB + gid, { signal: ctl.signal, cache: "no-store", redirect: "follow" });
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const text = await res.text();
+    if (/^\s*<(!doctype|html)/i.test(text)) throw new Error("not csv");
+    return parseCSV(text);
+  } finally { clearTimeout(t); }
+}
+
+/* ---- 날짜 ---- */
+const pad = n => String(n).padStart(2, "0");
+const ymd = d => d.getFullYear() + "-" + pad(d.getMonth()+1) + "-" + pad(d.getDate());
+function parseDate(s){
+  const m = /^(\d{4})[-.](\d{1,2})[-.](\d{1,2})/.exec(String(s || "").trim());
+  if (m) return new Date(+m[1], +m[2]-1, +m[3]);
+  if (/^\d{5}$/.test(String(s||"").trim())){ // Google serial
+    const n = +s; return new Date(Date.UTC(1899,11,30) + n*86400000);
+  }
+  const d = new Date(s); return isNaN(d) ? null : d;
+}
+const startOfWeek = d => { const x = new Date(d); const w = (x.getDay()+6)%7; x.setDate(x.getDate()-w); x.setHours(0,0,0,0); return x; };
+const addDays = (d,n) => { const x = new Date(d); x.setDate(x.getDate()+n); return x; };
+const fmtDot = d => (d.getMonth()+1) + "." + d.getDate();
+
+/* ---- 상태 ---- */
+const state = { cal:[], perf:[], ch:[], sum:{}, week: startOfWeek(new Date()), filter:"all", branch:"all", live:false };
+
+/* ---- 렌더 ---- */
+function el(tag, cls, html){ const n = document.createElement(tag); if (cls) n.className = cls; if (html != null) n.innerHTML = html; return n; }
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+
+function calRows(){
+  return state.cal.map(r => ({
+    date: r["날짜"] || "", ch: r["채널"] || "", br: r["지점"] || "",
+    topic: r["주제"] || "", fmt: r["형식"] || "", st: r["상태"] || "",
+    who: r["담당"] || "", link: r["링크"] || ""
+  })).filter(r => r.date).map(r => ({ ...r, d: parseDate(r.date) })).filter(r => r.d);
+}
+function visibleCal(){
+  return calRows().filter(r => (state.filter === "all" || chGroup(r.ch) === state.filter)
+                            && (state.branch === "all" || r.br === state.branch));
+}
+
+function renderFilters(){
+  const box = document.getElementById("chFilters");
+  box.innerHTML = "";
+  FILTERS.forEach(f => {
+    const b = el("button", "chip");
+    b.type = "button";
+    b.setAttribute("aria-pressed", String(state.filter === f.k));
+    b.innerHTML = (f.color ? `<i class="chip__dot" style="background:${f.color}"></i>` : "") + esc(f.label);
+    b.addEventListener("click", () => { state.filter = f.k; renderFilters(); renderWeek(); });
+    box.appendChild(b);
+  });
+}
+
+function renderWeek(){
+  const start = state.week, end = addDays(start, 6);
+  document.getElementById("wkLabel").textContent = fmtDot(start) + " – " + fmtDot(end);
+  const items = visibleCal();
+  const todayStr = ymd(new Date());
+  const box = document.getElementById("week");
+  box.innerHTML = "";
+  for (let i = 0; i < 7; i++){
+    const d = addDays(start, i), key = ymd(d);
+    const day = el("div", "day" + (key === todayStr ? " day--today" : "") + ([0,6].includes(d.getDay()) ? " day--weekend" : ""));
+    const h = el("div", "day__h", `<b>${WEEKDAY[d.getDay()]}</b><span>${fmtDot(d)}</span>`);
+    day.appendChild(h);
+    const body = el("div", "day__b");
+    const list = items.filter(r => ymd(r.d) === key);
+    if (!list.length){
+      day.classList.add("day--empty");
+      body.appendChild(el("div", "day__empty", "일정 없음"));
+    } else {
+      list.forEach(r => {
+        const c = chColor(r.ch);
+        const card = el("article", "cc");
+        card.style.setProperty("--ch", c);
+        const link = r.link && /^https?:/i.test(r.link);
+        card.innerHTML =
+          `<div class="cc__top"><span class="cc__ch">${esc(r.ch)}</span><span class="st" data-s="${esc(r.st)}">${esc(r.st)}</span></div>` +
+          `<p class="cc__t">${link ? `<a href="${esc(r.link)}" target="_blank" rel="noopener">${esc(r.topic)}</a>` : esc(r.topic)}</p>` +
+          `<div class="cc__m"><span class="cc__b">${esc(r.br)}</span><span>${esc(r.fmt)}</span><span>${esc(r.who)}</span></div>`;
+        body.appendChild(card);
+      });
+    }
+    day.appendChild(body);
+    box.appendChild(day);
+  }
+  if (!items.length){
+    box.innerHTML = `<div class="empty" style="grid-column:1/-1">이 조건에 맞는 콘텐츠가 이번 주에 없습니다. 필터를 바꾸거나 시트에서 추가하세요.</div>`;
+  }
+}
+
+function renderToday(){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const items = visibleCal()
+    .filter(r => ["기획","제작","예약"].includes(r.st) || (r.d < today && r.st !== "게시" && r.st !== "보류"))
+    .sort((a,b) => a.d - b.d);
+  const box = document.getElementById("todo");
+  box.innerHTML = "";
+  if (!items.length){
+    box.innerHTML = `<div class="empty" style="grid-column:1/-1">밀린 콘텐츠가 없습니다. 이번 주 일정은 캘린더에서 확인하세요.</div>`;
+    return;
+  }
+  items.slice(0, 10).forEach(r => {
+    const diff = Math.round((r.d - today) / 86400000);
+    let dcls = "", dlab = "";
+    if (diff < 0){ dcls = "ti__d--late"; dlab = Math.abs(diff) + "일 지남"; }
+    else if (diff === 0){ dcls = "ti__d--today"; dlab = "오늘"; }
+    else { dlab = "D-" + diff; }
+    const link = r.link && /^https?:/i.test(r.link) ? `<a class="ti__a" href="${esc(r.link)}" target="_blank" rel="noopener">열기 ↗</a>` : "";
+    const n = el("div", "ti");
+    n.innerHTML =
+      `<div class="ti__d ${dcls}"><b>${fmtDot(r.d)}</b>${esc(dlab)}</div>` +
+      `<div class="ti__b"><p class="ti__t">${esc(r.topic)}</p>` +
+      `<div class="ti__m"><span class="ti__ch" style="--ch:${chColor(r.ch)}"><i></i>${esc(r.ch)}</span><span>·</span><span>${esc(r.br)}</span><span>·</span><span>${esc(r.fmt)}</span><span class="st" data-s="${esc(r.st)}">${esc(r.st)}</span><span>·</span><span>${esc(r.who)}</span></div></div>` +
+      link;
+    box.appendChild(n);
+  });
+}
+
+function sumVal(label){
+  const hit = (state.sum || []).find(x => (x["항목"] || "").includes(label));
+  return hit ? String(hit["값"] || "").replace(/[^0-9.\-]/g, "") : "";
+}
+
+function renderKPI(){
+  const un = sumVal("미답변");
+  const pub = sumVal("이번 주 게시");
+  const rest = sumVal("남은 작업");
+  const rows = (state.perf || []).filter(p => (p["채널"] || ""));
+  const weeks = [...new Set(rows.map(p => p["주차"]))].filter(Boolean);
+  const last = weeks[weeks.length - 1] || "";
+  const views = rows.filter(p => p["주차"] === last).reduce((a, p) => a + (+String(p["조회수"] || 0).replace(/[^\d]/g, "")), 0);
+  const box = document.getElementById("kpi");
+  const items = [
+    { v: un, u: "건", l: "미답변 문의", alert: (+un > 0) },
+    { v: pub, u: "건", l: "이번 주 게시" },
+    { v: rest, u: "건", l: "남은 작업" },
+    { v: views ? views.toLocaleString("ko-KR") : "–", u: "", l: "이번 주 조회수(합)" }
+  ];
+  box.innerHTML = items.map(i =>
+    `<div class="kpi__c${i.alert ? " kpi__c--alert" : ""}"><b>${i.v === "" ? "–" : esc(i.v)}${i.u ? `<small>${i.u}</small>` : ""}</b><span>${esc(i.l)}</span></div>`
+  ).join("");
+}
+
+function renderInquiry(){
+  const box = document.getElementById("inqLinks");
+  box.innerHTML = "";
+  const chs = (state.ch || []).filter(c => (c["구분"] || "") === "카카오");
+  chs.forEach(c => {
+    const name = (c["채널명"] || "").replace(/카카오톡 채널\s*/, "").replace(/[()]/g, "") || c["지점"];
+    const a = el("a", "il");
+    a.href = c["주소"] || "#"; a.target = "_blank"; a.rel = "noopener";
+    a.innerHTML = `<b><i style="background:#FEE500;border:1px solid #E6C200"></i>카카오 ${esc(name)}</b><span>${esc(c["관리자"] || "")}</span>`;
+    box.appendChild(a);
+  });
+  (state.ch || []).filter(c => (c["구분"] || "") === "톡톡").forEach(c => {
+    const a = el("a", "il");
+    a.href = c["주소"] || "#"; a.target = "_blank"; a.rel = "noopener";
+    a.innerHTML = `<b><i style="background:#00A05A"></i>네이버 톡톡</b><span>${esc(c["지점"] || "")}점 · ${esc(c["관리자"] || "")}</span>`;
+    box.appendChild(a);
+  });
+  const s = el("a", "il il--sheet");
+  s.href = INQ_SHEET_URL; s.target = "_blank"; s.rel = "noopener";
+  s.innerHTML = `<b><i style="background:#fff"></i>문의응대 시트</b><span>회원명·문의내용은 여기서</span>`;
+  box.appendChild(s);
+  const un = sumVal("미답변");
+  document.getElementById("unanswered").innerHTML = `${un === "" ? "–" : esc(un)}<small>건</small>`;
+}
+
+function channelCards(){
+  const rows = state.ch || [];
+  const by = k => rows.filter(c => (c["구분"] || "") === k);
+  const home = by("홈페이지")[0] || {};
+  const blog = by("블로그")[0] || {};
+  const sns = by("SNS") || [];
+  const insta = sns.find(c => /인스타/.test(c["채널명"] || "")) || {};
+  const fb = sns.find(c => /페이스북/.test(c["채널명"] || "")) || {};
+  const kko = by("카카오"), talk = by("톡톡"), place = by("플레이스");
+  const cards = [];
+
+  cards.push({
+    title: "홈페이지", color: "#7BD400", sub: "tf-calc / homepage · 정적 페이지",
+    go: home["주소"], goLabel: "홈페이지 열기",
+    note: (home["비고"] || "").includes("임시") ? "임시 주소 — 정식 주소(tf-homepage)로 교체 예정" : ""
+  });
+  cards.push({
+    title: "인스타그램", color: "#703DFF", sub: `@koreantalllee · ${insta["관리자"] || ""}`,
+    go: insta["주소"], goLabel: "인스타그램 열기", note: insta["비고"] || ""
+  });
+  cards.push({
+    title: "네이버 블로그", color: "#03C75A", sub: `blog.naver.com/erachacha2021 · ${blog["관리자"] || ""}`,
+    go: blog["주소"], goLabel: "블로그 글쓰기", note: "플레이스 소식과 다른 채널입니다"
+  });
+  cards.push({
+    title: "네이버 플레이스 소식", color: "#0B7A45", sub: `지점 ${place.length}곳 · 스마트플레이스에서 발행`,
+    subs: place.map(c => ({ label: (c["지점"] || ""), href: c["주소"] })), note: "남강은 '남강테니스타운' 명의 · 소식 탭 없음"
+  });
+  cards.push({
+    title: "카카오톡 채널", color: "#E6C200", sub: `지점 ${kko.length}개 · 1:1 채팅·친구톡`,
+    subs: kko.map(c => ({ label: (c["채널명"] || "").replace(/카카오톡 채널\s*/, "").replace(/[()]/g, ""), href: c["주소"] }))
+  });
+  cards.push({
+    title: "네이버 톡톡", color: "#00A05A", sub: "방배점 상담 채널",
+    go: talk[0] ? talk[0]["주소"] : "", goLabel: "톡톡 파트너센터", note: ""
+  });
+  cards.push({
+    title: "페이스북", color: "#1877F2", sub: "페이지 주소 확인 필요",
+    go: /^https?:/i.test(fb["주소"] || "") ? fb["주소"] : "", goLabel: "페이지 열기",
+    need: !/^https?:/i.test(fb["주소"] || ""), note: "주소를 확인해 시트 채널정보에 넣어 주세요"
+  });
+  return cards;
+}
+
+function renderCards(){
+  const box = document.getElementById("cards");
+  box.innerHTML = "";
+  channelCards().forEach(c => {
+    const n = el("article", "card" + (c.need ? " card--muted" : ""));
+    n.style.setProperty("--ch", c.color);
+    let inner = `<div class="card__h"><p class="card__t"><i></i>${esc(c.title)}</p>` +
+      (c.need ? `<span class="badge-need">주소 확인 필요</span>` : `<span class="badge-ok">운영 중</span>`) + `</div>` +
+      `<p class="card__s">${esc(c.sub || "")}</p>`;
+    if (c.subs && c.subs.length){
+      inner += `<div class="subs">` + c.subs.map(s =>
+        s.href ? `<a href="${esc(s.href)}" target="_blank" rel="noopener">${esc(s.label)} ↗</a>` : `<span class="chip">${esc(s.label)}</span>`
+      ).join("") + `</div>`;
+    }
+    if (c.go) inner += `<a class="card__go" href="${esc(c.go)}" target="_blank" rel="noopener"><span>${esc(c.goLabel || "열기")}</span><span class="arw" aria-hidden="true">↗</span></a>`;
+    else if (c.need) inner += `<div class="card__go" style="color:var(--muted)"><span>주소 확인 후 연결</span><span class="arw" aria-hidden="true">·</span></div>`;
+    if (c.note) inner += `<p class="card__s" style="margin-top:8px">${esc(c.note)}</p>`;
+    n.innerHTML = inner;
+    box.appendChild(n);
+  });
+}
+
+function renderPerf(){
+  const rows = state.perf || [];
+  const weeks = [...new Set(rows.map(p => p["주차"]))].filter(Boolean);
+  const box = document.getElementById("perf");
+  box.innerHTML = "";
+  if (!weeks.length){ box.innerHTML = `<div class="empty">성과 데이터가 없습니다.</div>`; return; }
+  weeks.slice(-2).forEach(w => {
+    const list = rows.filter(p => p["주차"] === w);
+    const max = Math.max(1, ...list.map(p => +String(p["조회수"] || 0).replace(/[^\d]/g, "")));
+    const tot = list.reduce((a, p) => a + (+String(p["조회수"] || 0).replace(/[^\d]/g, "")), 0);
+    const inq = list.reduce((a, p) => a + (+String(p["문의건수"] || 0).replace(/[^\d]/g, "")), 0);
+    const n = el("div", "pw");
+    n.innerHTML = `<div class="pw__h"><b>${esc(w)}</b><span>조회 ${tot.toLocaleString("ko-KR")} · 문의 ${inq}</span></div><div class="pb">` +
+      list.map(p => {
+        const v = +String(p["조회수"] || 0).replace(/[^\d]/g, "");
+        const col = chColor((p["채널"] || "").replace("네이버 플레이스", "네이버 플레이스 소식"));
+        return `<div class="pb__r"><span class="pb__l" style="--ch:${col}"><i></i>${esc(p["채널"])}</span>` +
+               `<span class="pb__bar" style="--ch:${col}"><span style="width:${Math.max(3, Math.round(v / max * 100))}%"></span></span>` +
+               `<span class="pb__v">${v.toLocaleString("ko-KR")}<em>문의 ${esc(p["문의건수"] || 0)}</em></span></div>`;
+      }).join("") + `</div>`;
+    box.appendChild(n);
+  });
+}
+
+function renderAll(){ renderWeek(); renderToday(); renderKPI(); renderInquiry(); renderCards(); renderPerf(); }
+
+/* ---- init ---- */
+(function init(){
+  const now = new Date();
+  document.getElementById("todayLabel").textContent =
+    `${now.getFullYear()}.${pad(now.getMonth()+1)}.${pad(now.getDate())} (${WEEKDAY[now.getDay()]})`;
+  renderFilters();
+  document.getElementById("brFilter").addEventListener("change", e => { state.branch = e.target.value; renderWeek(); renderToday(); });
+  document.getElementById("prevWk").addEventListener("click", () => { state.week = addDays(state.week, -7); renderWeek(); });
+  document.getElementById("nextWk").addEventListener("click", () => { state.week = addDays(state.week, 7); renderWeek(); });
+  document.getElementById("resetWk").addEventListener("click", () => { state.week = startOfWeek(new Date()); renderWeek(); });
+
+  // 폴백으로 즉시 렌더
+  state.cal = toObjs([["날짜","요일","채널","지점","주제","형식","상태","담당","링크"], ...FALLBACK.cal]);
+  state.perf = toObjs([["주차","채널","조회수","문의건수","비고"], ...FALLBACK.perf]);
+  state.ch = toObjs([["채널명","구분","지점","주소","관리자","비고"], ...FALLBACK.ch]);
+  state.sum = toObjs([["항목","값"], ...FALLBACK.sum]);
+  renderAll();
+
+  const src = document.getElementById("src");
+  (async () => {
+    try{
+      const [cal, perf, ch, sum] = await Promise.all([loadCSV(SHEET.cal), loadCSV(SHEET.perf), loadCSV(SHEET.ch), loadCSV(SHEET.sum)]);
+      if (cal.length > 1) state.cal = toObjs(cal);
+      if (perf.length > 1) state.perf = toObjs(perf);
+      if (ch.length > 1) state.ch = toObjs(ch);
+      if (sum.length > 1) state.sum = toObjs(sum);
+      state.live = true;
+      renderAll();
+      const t = new Date();
+      src.innerHTML = `<i></i><span>구글 시트 연결됨 · ${pad(t.getHours())}:${pad(t.getMinutes())} 확인</span>`;
+    } catch (err){
+      src.className = "src src--warn";
+      src.innerHTML = `<i></i><span>시트 연결 실패 — 예시 데이터로 표시 중</span>`;
+      console.warn("[dashboard] sheet csv load failed:", err && err.message);
+    }
+  })();
+})();
+</script>
+</body>
+</html>
