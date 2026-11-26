@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>반포점 · 테니스판타지 (시안 C 지점 페이지 예시)</title>
+<meta name="description" content="테니스판타지 반포점. 실내 코트 2면, 볼머신, 라운지, 샤워실. 레슨 안내와 수강료, 오시는 길." />
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="../assets/base.css" />
+<style>
+/* ================= 시안 C — 지점 상세 페이지 (반포점 예시) ================= */
+.crumb{border-bottom:1px solid var(--line);background:#fff}
+.crumb__in{height:52px;display:flex;align-items:center;justify-content:space-between;gap:12px;width:min(100% - 32px,var(--max));margin-inline:auto}
+.crumb__path{font-size:12px;color:var(--gray-text);display:flex;align-items:center;gap:7px}
+.crumb__path b{color:var(--ink)}
+.crumb__path i{font-style:normal;color:var(--lgray)}
+.crumb .back{font-size:12px;font-weight:700;color:var(--purple)}
+
+.bhero{position:relative;overflow:hidden;background:var(--dark);color:#fff}
+.bhero__img{position:absolute;inset:0;z-index:0}
+.bhero__img img{width:100%;height:100%;object-fit:cover}
+.bhero__img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(49,9,111,.35),rgba(36,39,42,.86))}
+.bhero__in{position:relative;z-index:1;padding:74px 0 22px;min-height:300px;display:flex;flex-direction:column;justify-content:flex-end}
+.bhero h1{font-size:clamp(30px,9vw,52px);letter-spacing:-.045em}
+.bhero .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.bhero .tags span{border:1px solid rgba(255,255,255,.4);padding:3px 8px;font-size:11.5px;color:#fff}
+.bhero p{margin-top:10px;font-size:13px;color:rgba(255,255,255,.82);max-width:44ch}
+.bhero__acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+
+.quick{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border-bottom:1px solid var(--line)}
+.quick div{background:#fff;padding:14px}
+.quick b{display:block;font-size:13.5px}
+.quick span{display:block;margin-top:3px;font-size:11px;color:var(--gray-text)}
+
+.sec{padding:34px 0}
+.sec h2{font-size:clamp(20px,5.2vw,28px);margin-top:8px}
+.sec .lead{margin-top:8px;font-size:13.5px;color:var(--gray-text);line-height:1.7}
+
+.gal{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:16px}
+.gal figure{margin:0;position:relative}
+.gal figure:first-child{grid-column:1 / -1}
+.gal img{width:100%;height:100%;object-fit:cover;aspect-ratio:4/3}
+.gal figure:first-child img{aspect-ratio:16/10}
+.gal figcaption{position:absolute;left:0;bottom:0;background:rgba(36,39,42,.7);color:#fff;font-size:10.5px;padding:4px 7px}
+
+.lrow{display:grid;gap:10px;margin-top:16px}
+.lrow .mini{border:1px solid var(--line);padding:14px;background:#fff}
+.lrow b{font-size:14px}
+.lrow p{margin-top:5px;font-size:12.5px;color:var(--gray-text);line-height:1.65}
+
+.tbl{margin-top:16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+table.prices{width:100%;border-collapse:collapse;font-size:11.5px}
+table.prices caption{caption-side:top;text-align:left;font-size:12px;font-weight:700;color:var(--ink);padding:0 0 7px}
+table.prices th,table.prices td{border-bottom:1px solid var(--line);padding:8px 3px;text-align:right;white-space:nowrap}
+table.prices thead th{font-size:11px;font-weight:500;color:var(--gray-text);padding-bottom:6px}
+table.prices th[scope="row"]{text-align:left;font-weight:500;color:var(--muted);font-size:11px;white-space:normal}
+table.prices td{font-weight:700}
+.tbl-note{margin-top:8px;font-size:11.5px;color:var(--gray-text)}
+.price-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+.vlist{margin-top:14px;border-top:1px solid var(--line)}
+.vlist div{display:grid;grid-template-columns:64px 1fr;gap:10px;padding:11px 0;border-bottom:1px solid var(--line);font-size:13px}
+.vlist dt{color:var(--gray-text);font-size:12px}
+.vlist dd{margin:0}
+.vlist dd b{font-weight:700}
+.bhero-mini{display:grid;gap:8px;margin-top:16px}
+
+.others{background:var(--tint);padding:34px 0 42px}
+.others h2{font-size:clamp(19px,5vw,26px);margin-top:8px}
+.orow{display:grid;gap:8px;margin-top:16px}
+.orow a{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#fff;border:1px solid var(--line);padding:13px 14px}
+.orow b{font-size:14px}
+.orow span{font-size:11.5px;color:var(--gray-text)}
+.orow a::after{content:"→";font-family:var(--latin);color:var(--purple);font-weight:700}
+
+@media(min-width:420px){
+  table.prices{font-size:12.5px}
+  table.prices th,table.prices td{padding:9px 6px}
+}
+@media(min-width:700px){
+  table.prices{min-width:330px}
+  .bhero__in{min-height:400px;padding:120px 0 34px}
+  .bhero__acts{grid-template-columns:auto auto;justify-content:start}
+  .bhero__acts .btn{padding:0 28px;min-width:170px}
+  .quick{grid-template-columns:repeat(4,1fr)}
+  .gal{grid-template-columns:repeat(3,1fr)}
+  .gal figure:first-child{grid-column:span 2;grid-row:span 2}
+  .gal figure:first-child img{aspect-ratio:4/3;height:100%}
+  .gal img{aspect-ratio:4/3}
+  .lrow{grid-template-columns:1fr 1fr}
+  .sec{padding:52px 0}
+  .price-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 34px}
+  .orow{grid-template-columns:repeat(3,1fr)}
+  .others{padding:52px 0}
+}
+</style>
+</head>
+<body>
+
+<div class="mockbar">
+  <div class="mockbar__in">
+    <div class="mockbar__top">
+      <div class="mockbar__id">
+        <span class="mockbar__letter">C</span>
+        <span class="mockbar__title">메인 + 지점 페이지 분리형 <em>반포점 상세 페이지 예시</em></span>
+      </div>
+      <a class="mockbar__back" href="../index.html">4종 비교로 ↩</a>
+    </div>
+    <div class="mockbar__notes">
+      <span class="good"><b>이 페이지</b> 지점 하나를 끝까지 설명합니다. 시설·가격·오시는 길이 한 페이지에 모입니다.</span>
+      <span class="bad"><b>아쉬움</b> 지점마다 같은 페이지를 하나씩 만들어야 해서 제작·관리 비용이 4배가 됩니다.</span>
+    </div>
+  </div>
+</div>
+
+<div class="crumb">
+  <div class="crumb__in">
+    <span class="crumb__path">지점 안내 <i>/</i> <b>반포점</b></span>
+    <a class="back" href="index.html">← 메인으로</a>
+  </div>
+</div>
+
+<main>
+  <section class="bhero">
+    <div class="bhero__img"><img src="../assets/images/banpo-court-wide.jpg" alt="반포점 보라색 실내 코트 전경" /></div>
+    <div class="wrap bhero__in">
+      <span class="eyebrow" style="color:var(--neon)">Banpo · 1호점</span>
+      <h1>반포점</h1>
+      <div class="tags">
+        <span>실내 코트 2면</span><span>2021.5 오픈</span><span>고속터미널역 5분</span><span>06:00–22:00</span>
+      </div>
+      <p>지하지만 지하 같지 않은 보라색 코트. 라운지 커피와 볼머신, 샤워실까지 준비했습니다.</p>
+      <div class="bhero__acts">
+        <a class="btn btn--primary" href="https://pf.kakao.com/_xhumzs" target="_blank" rel="noopener">카카오톡 상담</a>
+        <a class="btn btn--ghost" href="https://map.naver.com/p/search/%ED%85%8C%EB%8B%88%EC%8A%A4%ED%8C%90%ED%83%80%EC%A7%80%20%EB%B0%98%ED%8F%AC%EC%A0%90" target="_blank" rel="noopener">네이버지도</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="quick">
+    <div><b>매일 06:00–22:00</b><span>카카오톡 상담 10:00–18:00</span></div>
+    <div><b>0507-1377-1821</b><span>전화 상담</span></div>
+    <div><b>주차 1시간 지원</b><span>만차 시 공영주차장</span></div>
+    <div><b>라켓 대여</b><span>월 10,000원</span></div>
+  </div>
+
+  <!-- 시설 -->
+  <section class="sec">
+    <div class="wrap">
+      <span class="eyebrow">Facilities</span>
+      <h2>코트부터 샤워실까지</h2>
+      <p class="lead">실내 코트 2면과 볼머신 연습공간, 스크린 테니스 타깃, 라운지·무료 커피, 남녀 프라이빗 샤워실.</p>
+      <div class="gal">
+        <figure><img src="../assets/images/banpo-court-wide.jpg" alt="반포점 보라색 코트 전경" loading="lazy" /><figcaption>보라색 하드코트 2면</figcaption></figure>
+        <figure><img src="../assets/images/banpo-lounge.jpg" alt="반포점 라운지" loading="lazy" /><figcaption>라운지 &amp; 아트월</figcaption></figure>
+        <figure><img src="../assets/images/banpo-pt.jpg" alt="반포점 PT존" loading="lazy" /><figcaption>PT · 휘트니스존</figcaption></figure>
+        <figure><img src="../assets/images/banpo-warmup.jpg" alt="반포점 웜업존" loading="lazy" /><figcaption>웜업존</figcaption></figure>
+        <figure><img src="../assets/images/banpo-shower.jpg" alt="반포점 샤워실" loading="lazy" /><figcaption>샤워실</figcaption></figure>
+        <figure><img src="../assets/images/banpo-rackets.jpg" alt="반포점 라켓 대여" loading="lazy" /><figcaption>라켓 대여</figcaption></figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- 레슨 -->
+  <section class="sec" style="background:var(--tint)">
+    <div class="wrap">
+      <span class="eyebrow">Lesson</span>
+      <h2>반포점 레슨</h2>
+      <p class="lead">1시간은 웜업 15분 + 레슨 30분 + 셀프 볼머신 15분. 정규레슨과 쿠폰레슨 중 편한 쪽으로.</p>
+      <div class="lrow">
+        <div class="mini">
+          <b>정규레슨 · 요일·시간 고정</b>
+          <p>1:1 / 1:2 · 주 1·2·3회 · 20분 또는 30분. 한 달 단위 등록, 2·3개월 등록 시 할인.</p>
+        </div>
+        <div class="mini">
+          <b>쿠폰레슨 · 수시 예약</b>
+          <p>1회·5회·10회권(사용기간 3개월). 당일 예약 가능, 당일 취소·변경은 차감.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 가격 -->
+  <section class="sec">
+    <div class="wrap">
+      <div class="price-head">
+        <div>
+          <span class="eyebrow">Price</span>
+          <h2>수강료</h2>
+          <p class="lead">VAT 포함 · 1:2는 1인 기준 · 2026년 확인된 가격표 기준</p>
+        </div>
+      </div>
+
+      <div class="price-grid">
+        <div class="tbl">
+          <table class="prices">
+            <caption>20분 레슨 · 평일 오전 ~ 14시</caption>
+            <thead><tr><th scope="col">구분</th><th scope="col">주 1회</th><th scope="col">주 2회</th><th scope="col">주 3회</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1:1</th><td>160,000원</td><td>300,000원</td><td>420,000원</td></tr>
+              <tr><th scope="row">1:2 (1인)</th><td>120,000원</td><td>220,000원</td><td>318,000원</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tbl">
+          <table class="prices">
+            <caption>30분 레슨 · 정규 (평일 / 주말)</caption>
+            <thead><tr><th scope="col">구분</th><th scope="col">주 1회</th><th scope="col">주 2회</th><th scope="col">주 3회</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1:1 평일</th><td>240,000원</td><td>440,000원</td><td>600,000원</td></tr>
+              <tr><th scope="row">1:2 평일 (1인)</th><td>180,000원</td><td>300,000원</td><td>380,000원</td></tr>
+              <tr><th scope="row">1:1 주말</th><td>260,000원</td><td>480,000원</td><td>—</td></tr>
+              <tr><th scope="row">1:2 주말 (1인)</th><td>200,000원</td><td>320,000원</td><td>—</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tbl">
+          <table class="prices">
+            <caption>평일 + 주말 혼합 (30분)</caption>
+            <thead><tr><th scope="col">구성</th><th scope="col">1:1</th><th scope="col">1:2 (1인)</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">평일 1 + 주말 1 (주 2회)</th><td>460,000원</td><td>320,000원</td></tr>
+              <tr><th scope="row">평일 2 + 주말 1 (주 3회)</th><td>660,000원</td><td>460,000원</td></tr>
+              <tr><th scope="row">평일 1 + 주말 2 (주 3회)</th><td>700,000원</td><td>480,000원</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tbl">
+          <table class="prices">
+            <caption>쿠폰레슨 · 사용기간 3개월</caption>
+            <thead><tr><th scope="col">구분</th><th scope="col">1회</th><th scope="col">5회</th><th scope="col">10회</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">20분 1:1</th><td>45,000원</td><td>220,000원</td><td>400,000원</td></tr>
+              <tr><th scope="row">20분 1:2 (1인)</th><td>35,000원</td><td>170,000원</td><td>300,000원</td></tr>
+              <tr><th scope="row">30분 1:1</th><td>65,000원</td><td>320,000원</td><td>600,000원</td></tr>
+              <tr><th scope="row">30분 1:2 (1인)</th><td>50,000원</td><td>250,000원</td><td>450,000원</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tbl">
+          <table class="prices">
+            <caption>코트 · 볼머신 · 대여</caption>
+            <thead><tr><th scope="col">항목</th><th scope="col">요금</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">코트 대여 (1코트 · 1시간)</th><td>30,000원</td></tr>
+              <tr><th scope="row">볼머신 20분 이내</th><td>20,000원</td></tr>
+              <tr><th scope="row">볼머신 30분 이내</th><td>30,000원</td></tr>
+              <tr><th scope="row">라커 대여 · 라켓 대여</th><td>각 월 10,000원</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="tbl-note">표는 좌우로 넘겨서 볼 수 있습니다. 내 요일·시간 기준 금액은 수강료 계산기에서 확인하세요.</p>
+      <a class="btn btn--dark btn--sm" href="https://ouy2006.github.io/tf-calc/" target="_blank" rel="noopener" style="margin-top:14px">수강료 계산기 <span class="btn__arrow" aria-hidden="true">→</span></a>
+    </div>
+  </section>
+
+  <!-- 오시는 길 -->
+  <section class="sec" style="background:var(--tint)">
+    <div class="wrap">
+      <span class="eyebrow">Visit</span>
+      <h2>오시는 길</h2>
+      <dl class="vlist">
+        <div><dt>주소</dt><dd><b>서울 서초구 고무래로10길 17 동호빌딩 지하 2층</b></dd></div>
+        <div><dt>전화</dt><dd>0507-1377-1821</dd></div>
+        <div><dt>이용</dt><dd>매일 06:00 ~ 22:00 · 카카오톡 상담 10:00 ~ 18:00</dd></div>
+        <div><dt>오는 길</dt><dd>3·7·9호선 고속터미널역 도보 5분 / 9호선 반포역</dd></div>
+        <div><dt>주차</dt><dd>건물 앞 주차 · 만차 시 인근 공영주차장 1시간 지원</dd></div>
+      </dl>
+      <div class="bhero-mini">
+        <a class="btn btn--primary" href="https://pf.kakao.com/_xhumzs" target="_blank" rel="noopener">카카오톡으로 상담하기</a>
+        <a class="btn btn--line" href="https://map.naver.com/p/search/%ED%85%8C%EB%8B%88%EC%8A%A4%ED%8C%90%ED%83%80%EC%A7%80%20%EB%B0%98%ED%8F%AC%EC%A0%90" target="_blank" rel="noopener">네이버지도에서 보기</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 다른 지점 -->
+  <section class="others">
+    <div class="wrap">
+      <span class="eyebrow">Other Branches</span>
+      <h2>다른 지점</h2>
+      <div class="orow">
+        <a href="https://pf.kakao.com/_TYdxfb" target="_blank" rel="noopener"><span><b>방배점</b><br /><span>실내 100평+ · 편집숍</span></span></a>
+        <a href="https://pf.kakao.com/_XelyG" target="_blank" rel="noopener"><span><b>삼성점</b><br /><span>테니스 + 피트니스</span></span></a>
+        <a href="https://pf.kakao.com/_jxkxaxhn" target="_blank" rel="noopener"><span><b>동작테니스장</b><br /><span>야외 클레이 6면</span></span></a>
+      </div>
+      <p class="lead" style="margin-top:14px">방배·삼성·동작은 이 시안에서 페이지를 만들지 않았습니다. 반포점과 같은 틀로 하나씩 만들 수 있습니다. (각 링크는 카카오톡 채널로 연결)</p>
+    </div>
+  </section>
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap">
+    <div class="sitefoot__top">
+      <div class="sitefoot__brand">
+        <b>TENNIS FANTASY</b>
+        <p>보라색 코트의 실내 테니스 레슨. 반포 · 방배 · 삼성 · 동작.<br />© 2026 TENNIS FANTASY. All rights reserved.</p>
+      </div>
+      <nav class="sitefoot__links" aria-label="채널">
+        <a href="https://pf.kakao.com/_xhumzs" target="_blank" rel="noopener">반포 카카오채널</a>
+        <a href="https://pf.kakao.com/_TYdxfb" target="_blank" rel="noopener">방배</a>
+        <a href="https://pf.kakao.com/_XelyG" target="_blank" rel="noopener">삼성</a>
+        <a href="https://pf.kakao.com/_jxkxaxhn" target="_blank" rel="noopener">동작</a>
+        <a href="https://blog.naver.com/erachacha2021" target="_blank" rel="noopener">블로그</a>
+      </nav>
+    </div>
+    <p class="sitefoot__note">가격·시설 정보는 2026년 11월 기준 확인된 자료입니다. · 이 페이지는 개편 시안 C의 반포점 예시 목업입니다.</p>
+  </div>
+</footer>
+
+</body>
+</html>

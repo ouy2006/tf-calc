@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>시안 B · 지점 탭형 — 테니스판타지 홈페이지 개편</title>
+<meta name="description" content="테니스판타지 홈페이지 개편 시안 B. 상단 고정 탭 4개로 지점을 고르면 그 지점 정보만 보입니다." />
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="../assets/base.css" />
+<style>
+/* ================= 시안 B — 지점 탭형 ================= */
+.headB{border-bottom:1px solid var(--line);background:#fff}
+.headB .sitehead__in{height:56px}
+.heroB{background:var(--dark);color:#fff;position:relative;overflow:hidden;padding:26px 0 24px}
+.heroB .eyebrow{color:var(--neon)}
+.heroB h1{font-size:clamp(25px,7vw,40px);margin-top:10px;letter-spacing:-.04em}
+.heroB h1 em{font-style:normal;color:var(--neon)}
+.heroB p{margin-top:10px;font-size:13.5px;color:rgba(255,255,255,.8);line-height:1.7;max-width:40ch}
+
+/* 탭 바 */
+.tabbar{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.97);border-bottom:1px solid var(--line);
+  -webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.tabbar__in{display:flex;width:min(100% - 24px,var(--max));margin-inline:auto;gap:4px;overflow-x:auto;scrollbar-width:none}
+.tabbar__in::-webkit-scrollbar{display:none}
+.tabbar button{
+  position:relative;flex:1 1 0;min-width:0;padding:11px 4px 10px;text-align:center;
+  font-size:13px;font-weight:500;color:var(--gray-text);border-bottom:2px solid transparent;transition:.2s;
+}
+.tabbar button b{display:block;font-family:var(--latin);font-size:8.5px;font-weight:800;letter-spacing:.08em;color:var(--gray);text-transform:uppercase;margin-bottom:3px;white-space:nowrap}
+.tabbar button[aria-selected="true"]{color:var(--ink);font-weight:700;border-bottom-color:var(--purple)}
+.tabbar button[aria-selected="true"] b{color:var(--purple)}
+
+/* 지점 패널 */
+.panelB{padding:0 0 34px}
+.panelB__shot{aspect-ratio:16/10;position:relative}
+.panelB__shot .shot__cap{font-size:11px}
+.panelB__head{padding:18px 0 0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.panelB__head h2{font-size:clamp(22px,5.8vw,30px)}
+.panelB__head .sub{margin-top:4px;font-size:12.5px;color:var(--gray-text)}
+.panelB__lead{margin-top:10px;font-size:14px;color:var(--muted);line-height:1.75}
+.panelB .facts{margin-top:16px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chips span{border:1px solid var(--line);padding:5px 9px;font-size:11.5px;color:var(--muted);background:#fff}
+
+.pricebox{margin-top:16px;border:1px solid var(--line);background:#fff}
+.pricebox__head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;border-bottom:1px solid var(--line);background:var(--tint)}
+.pricebox__head b{font-size:13.5px}
+.pricebox__head span{font-size:11.5px;color:var(--gray-text)}
+.pricebox__rows{padding:6px 14px 12px}
+.pricebox__rows div{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:9px 0;border-bottom:1px dashed var(--line);font-size:12.5px;color:var(--muted)}
+.pricebox__rows div:last-child{border-bottom:0}
+.pricebox__rows b{font-size:14.5px;color:var(--ink);white-space:nowrap}
+.panelB__acts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:16px}
+.panelB__acts .btn{font-size:13.5px}
+
+/* 공통 안내 */
+.commonB{border-top:6px solid var(--tint);padding:34px 0 8px}
+.commonB h2{font-size:clamp(20px,5.2vw,28px);margin-top:8px}
+.commonB__grid{display:grid;gap:10px;margin-top:18px}
+.commonB__grid .mini{border:1px solid var(--line);padding:14px;background:#fff}
+.commonB__grid b{font-size:14px}
+.commonB__grid p{margin-top:5px;font-size:12.5px;color:var(--gray-text);line-height:1.65}
+.ctaBand{margin:26px 0 0;padding:22px;background:var(--ink);color:#fff;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px}
+.ctaBand p{font-size:13px;color:rgba(255,255,255,.78);max-width:30ch}
+
+@media(max-width:759px){
+  .tabbar button b{display:none}
+  .tabbar button{font-size:14px;padding:15px 4px 13px}
+}
+@media(min-width:760px){
+  .tabbar button{flex:0 0 auto;min-width:110px;font-size:15px;padding:16px 22px}
+  .tabbar button b{font-size:10px}
+  .panelB__body{display:grid;grid-template-columns:1.1fr .9fr;gap:34px;align-items:start}
+  .panelB__shot{aspect-ratio:4/3}
+  .panelB__head{padding-top:0}
+  .commonB__grid{grid-template-columns:repeat(3,1fr)}
+  .heroB{padding:56px 0 46px}
+  .heroB p{font-size:15px}
+  .panelB__acts{grid-template-columns:auto auto;justify-content:start}
+  .panelB__acts .btn{padding:0 26px}
+}
+</style>
+</head>
+<body>
+
+<div class="mockbar">
+  <div class="mockbar__in">
+    <div class="mockbar__top">
+      <div class="mockbar__id">
+        <span class="mockbar__letter">B</span>
+        <span class="mockbar__title">지점 탭형 <em>탭 4개로 한 지점만 표시</em></span>
+      </div>
+      <a class="mockbar__back" href="../index.html">4종 비교로 ↩</a>
+    </div>
+    <div class="mockbar__notes">
+      <span class="good"><b>장점</b> 한 번에 한 지점만 보여 길이가 절반 이하. 탭이 상단에 붙어 있어 전환이 쉽습니다.</span>
+      <span class="bad"><b>아쉬움</b> 선택 전에는 다른 지점이 안 보여, 비교하려면 탭을 눌러 봐야 합니다.</span>
+    </div>
+  </div>
+</div>
+
+<header class="headB">
+  <div class="sitehead__in">
+    <a class="brand" href="#top" aria-label="테니스판타지 홈">
+      <span class="brand__en">TENNIS FANTASY</span>
+      <span class="brand__kr">테니스판타지</span>
+    </a>
+    <div class="headact">
+      <a href="https://ouy2006.github.io/tf-calc/" target="_blank" rel="noopener">수강료 계산기</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <section class="heroB">
+    <div class="field" aria-hidden="true"></div>
+    <div class="wrap" style="position:relative">
+      <span class="eyebrow">Indoor Tennis · Since 2021</span>
+      <h1>네 곳 중<br /><em>가까운 한 곳</em>만 보세요</h1>
+      <p>탭을 누르면 그 지점의 시설·가격·오시는 길만 나옵니다. 라켓은 대여해 드립니다.</p>
+    </div>
+  </section>
+
+  <!-- ============ 상단 고정 탭 ============ -->
+  <div class="tabbar">
+    <div class="tabbar__in" role="tablist" aria-label="지점 선택">
+      <button role="tab" id="tb-banpo" aria-controls="pn-banpo" aria-selected="true"><b>Banpo</b>반포점</button>
+      <button role="tab" id="tb-bangbae" aria-controls="pn-bangbae" aria-selected="false"><b>Bangbae</b>방배점</button>
+      <button role="tab" id="tb-samseong" aria-controls="pn-samseong" aria-selected="false"><b>Samseong</b>삼성점</button>
+      <button role="tab" id="tb-dongjak" aria-controls="pn-dongjak" aria-selected="false"><b>Dongjak</b>동작장</button>
+    </div>
+  </div>
+
+  <!-- ============ 반포 ============ -->
+  <section class="panelB wrap" id="pn-banpo" role="tabpanel" aria-labelledby="tb-banpo" tabindex="0">
+    <div class="panelB__shot shot">
+      <img src="../assets/images/banpo-court-wide.jpg" alt="반포점 보라색 실내 코트 전경" />
+      <span class="shot__cap">반포점 · 보라색 하드코트 2면</span>
+    </div>
+    <div class="panelB__body">
+      <div>
+        <div class="panelB__head">
+          <div><h2>반포점</h2><p class="sub">1호점 · 2021년 5월 오픈</p></div>
+          <span class="tag">고속터미널역 5분</span>
+        </div>
+        <p class="panelB__lead">지하지만 지하 같지 않은 보라색 코트. 라운지 커피와 볼머신까지, 레슨의 1시간이 온전히 내 시간이 됩니다.</p>
+        <div class="facts">
+          <div><b>서울 서초구 고무래로10길 17</b><span>동호빌딩 지하 2층</span></div>
+          <div><b>0507-1377-1821</b><span>카카오톡 상담 10:00–18:00</span></div>
+          <div><b>매일 06:00–22:00</b><span>실내 지점 이용 시간</span></div>
+          <div><b>주차 1시간 지원</b><span>만차 시 공영주차장</span></div>
+        </div>
+        <div class="chips">
+          <span>실내 코트 2면</span><span>볼머신</span><span>스크린 테니스</span><span>라운지·커피</span><span>샤워실</span><span>라켓 대여</span>
+        </div>
+      </div>
+      <div>
+        <div class="pricebox">
+          <div class="pricebox__head"><b>수강료</b><span>VAT 포함 · 1:2는 1인 기준</span></div>
+          <div class="pricebox__rows">
+            <div>20분 1:1 · 주 1회<b>160,000원</b></div>
+            <div>30분 1:1 · 주 1회<b>240,000원</b></div>
+            <div>쿠폰 20분 1:1 · 1회<b>45,000원</b></div>
+            <div>코트 대여 · 1시간<b>30,000원</b></div>
+          </div>
+        </div>
+        <div class="panelB__acts">
+          <a class="btn btn--primary" href="https://pf.kakao.com/_xhumzs" target="_blank" rel="noopener">카카오톡 상담</a>
+          <a class="btn btn--line" href="https://map.naver.com/p/search/%ED%85%8C%EB%8B%88%EC%8A%A4%ED%8C%90%ED%83%80%EC%A7%80%20%EB%B0%98%ED%8F%AC%EC%A0%90" target="_blank" rel="noopener">네이버지도</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 방배 ============ -->
+  <section class="panelB wrap" id="pn-bangbae" role="tabpanel" aria-labelledby="tb-bangbae" tabindex="0" hidden>
+    <div class="panelB__shot ph">
+      <div class="ph__in"><b>BANGBAE · INDOOR</b><span>현장 사진 준비 중 — 받으면 이 자리에</span></div>
+    </div>
+    <div class="panelB__body">
+      <div>
+        <div class="panelB__head">
+          <div><h2>방배점</h2><p class="sub">지하1층 ~ 지상2층</p></div>
+          <span class="tag">방배역·내방역 5분</span>
+        </div>
+        <p class="panelB__lead">100평이 넘는 실내 코트와 2층 테니스 편집숍. 운동하다 필요한 것을 그 자리에서 살 수 있는 지점입니다.</p>
+        <div class="facts">
+          <div><b>서울 서초구 방배로 118</b><span>방배역·내방역 도보 5분</span></div>
+          <div><b>0507-1327-1821</b><span>카카오톡 상담 10:00–18:00</span></div>
+          <div><b>매일 06:00–22:00</b><span>실내 지점 이용 시간</span></div>
+          <div><b>주차 1시간 지원</b><span>초과 요금은 현장 확인</span></div>
+        </div>
+        <div class="chips">
+          <span>100평+ 실내 코트</span><span>웜업존·테라스</span><span>볼머신실</span><span>편집숍</span><span>락커·샤워</span>
+        </div>
+      </div>
+      <div>
+        <div class="pricebox">
+          <div class="pricebox__head"><b>수강료</b><span>평일·주말 통합 · 1개월 기준</span></div>
+          <div class="pricebox__rows">
+            <div>정규 1:1 · 주 1회<b>180,000원</b></div>
+            <div>정규 2:1 · 주 1회 (1인)<b>140,000원</b></div>
+            <div>2개월 등록 할인<b>5%</b></div>
+            <div>3개월 등록 할인<b>10%</b></div>
+          </div>
+        </div>
+        <div class="panelB__acts">
+          <a class="btn btn--primary" href="https://pf.kakao.com/_TYdxfb" target="_blank" rel="noopener">카카오톡 상담</a>
+          <a class="btn btn--line" href="https://map.naver.com/p/search/%ED%85%8C%EB%8B%88%EC%8A%A4%ED%8C%90%ED%83%80%EC%A7%80%20%EB%B0%A9%EB%B0%B0%EC%A0%90" target="_blank" rel="noopener">네이버지도</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 삼성 ============ -->
+  <section class="panelB wrap" id="pn-samseong" role="tabpanel" aria-labelledby="tb-samseong" tabindex="0" hidden>
+    <div class="panelB__shot shot">
+      <img src="../assets/images/samsung-court.jpg" alt="삼성점 보라색 실내 코트" loading="lazy" />
+      <span class="shot__cap">삼성점 · 코트 옆 라운지</span>
+    </div>
+    <div class="panelB__body">
+      <div>
+        <div class="panelB__head">
+          <div><h2>삼성점</h2><p class="sub">버핏그라운드 삼성 B1</p></div>
+          <span class="tag">삼성역·선릉역 사이</span>
+        </div>
+        <p class="panelB__lead">레슨 멤버십이면 피트니스를 횟수 제한 없이. 테니스·필라테스·스트레칭이 한 건물에 있습니다.</p>
+        <div class="facts">
+          <div><b>서울 강남구 삼성로 512</b><span>삼성동빌딩 지하 1층</span></div>
+          <div><b>0507-1419-5420</b><span>카카오톡 월~금 10:00–18:00</span></div>
+          <div><b>레슨 = 피트니스 무료</b><span>샤워·락커·수건 구비</span></div>
+          <div><b>주차 2시간 무료</b><span>초과 10분당 1,000원</span></div>
+        </div>
+        <div class="chips">
+          <span>실내 코트</span><span>버핏그라운드 피트니스</span><span>필라테스</span><span>패시브 스트레칭</span><span>체험 20분+볼머신</span>
+        </div>
+      </div>
+      <div>
+        <div class="pricebox">
+          <div class="pricebox__head"><b>수강료</b><span>프로그램이 달라 채널 안내</span></div>
+          <div class="pricebox__rows">
+            <div>체험 수업 구성<b>레슨 20분 + 볼머신</b></div>
+            <div>레슨 멤버십<b>피트니스 무료</b></div>
+            <div>변경·취소<b>24시간 전까지</b></div>
+          </div>
+        </div>
+        <div class="panelB__acts">
+          <a class="btn btn--primary" href="https://pf.kakao.com/_XelyG" target="_blank" rel="noopener">카카오톡 상담</a>
+          <a class="btn btn--line" href="https://map.naver.com/p/search/%ED%85%8C%EB%8B%88%EC%8A%A4%ED%8C%90%ED%83%80%EC%A7%80%20%EC%82%BC%EC%84%B1%EC%A0%90" target="_blank" rel="noopener">네이버지도</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 동작 ============ -->
+  <section class="panelB wrap" id="pn-dongjak" role="tabpanel" aria-labelledby="tb-dongjak" tabindex="0" hidden>
+    <div class="panelB__shot shot">
+      <img src="../assets/images/outdoor-clay2.jpg" alt="야외 클레이 코트" loading="lazy" />
+      <span class="shot__cap">동작테니스장 · 야외 클레이</span>
+    </div>
+    <div class="panelB__body">
+      <div>
+        <div class="panelB__head">
+          <div><h2>동작테니스장</h2><p class="sub">야외 클레이 6면 · 공공시설</p></div>
+          <span class="tag">동작역 3분</span>
+        </div>
+        <p class="panelB__lead">국립현충원을 마주한 동작주차공원 안. 야간 조명 3면에서 클럽 경기가 열립니다.</p>
+        <div class="facts">
+          <div><b>서울 동작구 현충로 220</b><span>동작주차공원 내</span></div>
+          <div><b>레슨 010-8773-9172</b><span>시설·코트 010-2474-2461</span></div>
+          <div><b>매일 06:00–20:00</b><span>채팅 상담 09:00–18:00</span></div>
+          <div><b>주차 147면</b><span>5분당 100원(유료)</span></div>
+        </div>
+        <div class="chips">
+          <span>클레이 6면</span><span>야간 조명 3면</span><span>탈의실·샤워실</span><span>수준별 클럽</span>
+        </div>
+      </div>
+      <div>
+        <div class="pricebox">
+          <div class="pricebox__head"><b>이용 안내</b><span>코트와 레슨 예약 창구가 다릅니다</span></div>
+          <div class="pricebox__rows">
+            <div>코트 대관<b>서울시 공공예약</b></div>
+            <div>레슨 문의<b>카카오톡 채널</b></div>
+            <div>운영 시간<b>06:00–20:00</b></div>
+          </div>
+        </div>
+        <div class="panelB__acts">
+          <a class="btn btn--primary" href="https://pf.kakao.com/_jxkxaxhn" target="_blank" rel="noopener">카카오톡 상담</a>
+          <a class="btn btn--line" href="https://yeyak.seoul.go.kr" target="_blank" rel="noopener">코트 예약(서울시)</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 지점 공통 ============ -->
+  <section class="commonB">
+    <div class="wrap">
+      <span class="eyebrow">Lesson</span>
+      <h2>어느 지점이든 레슨은 두 가지</h2>
+      <div class="commonB__grid">
+        <div class="mini">
+          <b>정규레슨 · 요일 고정</b>
+          <p>매주 같은 요일·시간. 1:1 / 1:2 · 주 1·2·3회. 한 달 단위 등록, 2개월·3개월 할인(지점별).</p>
+        </div>
+        <div class="mini">
+          <b>쿠폰레슨 · 수시 예약</b>
+          <p>원하는 날 카카오톡 예약. 1·5·10회권, 악천후·공휴일은 차감 없음.</p>
+        </div>
+        <div class="mini">
+          <b>1시간 구성</b>
+          <p>웜업 + 레슨 + 셀프 볼머신. 반포 15+30+15, 방배 20+20+20, 삼성 20분+볼머신.</p>
+        </div>
+      </div>
+      <div class="ctaBand">
+        <div>
+          <b style="font-size:14.5px">내 요일·시간으로 얼마인지 계산해 보세요</b>
+          <p style="margin-top:4px">수강료 계산기에서 주차·할인까지 한 번에 확인됩니다.</p>
+        </div>
+        <a class="btn btn--neon btn--sm" href="https://ouy2006.github.io/tf-calc/" target="_blank" rel="noopener">수강료 계산기 <span class="btn__arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap">
+    <div class="sitefoot__top">
+      <div class="sitefoot__brand">
+        <b>TENNIS FANTASY</b>
+        <p>보라색 코트의 실내 테니스 레슨. 반포 · 방배 · 삼성 · 동작.<br />© 2026 TENNIS FANTASY. All rights reserved.</p>
+      </div>
+      <nav class="sitefoot__links" aria-label="채널">
+        <a href="https://pf.kakao.com/_xhumzs" target="_blank" rel="noopener">반포 카카오채널</a>
+        <a href="https://pf.kakao.com/_TYdxfb" target="_blank" rel="noopener">방배</a>
+        <a href="https://pf.kakao.com/_XelyG" target="_blank" rel="noopener">삼성</a>
+        <a href="https://pf.kakao.com/_jxkxaxhn" target="_blank" rel="noopener">동작</a>
+        <a href="https://www.instagram.com/tennis_fantasy/" target="_blank" rel="noopener">인스타그램</a>
+        <a href="https://blog.naver.com/erachacha2021" target="_blank" rel="noopener">블로그</a>
+      </nav>
+    </div>
+    <p class="sitefoot__note">가격·시설 정보는 2026년 11월 기준 확인된 자료입니다. 실제 운영 기준과 다를 수 있어 방문 전 카카오톡 채널 확인을 권장합니다. · 이 페이지는 개편 시안 B 목업입니다.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var tabs = Array.prototype.slice.call(document.querySelectorAll('[role="tab"]'));
+  function select(tab) {
+    tabs.forEach(function (t) {
+      var on = t === tab;
+      t.setAttribute("aria-selected", on ? "true" : "false");
+      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+    });
+    if (tab.id) {
+      try { history.replaceState(null, "", "#" + tab.getAttribute("aria-controls").replace("pn-", "")); } catch (e) {}
+    }
+  }
+  tabs.forEach(function (tab, i) {
+    tab.addEventListener("click", function () { select(tab); });
+    tab.addEventListener("keydown", function (e) {
+      if (e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      var next = tabs[(i + (e.key === "ArrowRight" ? 1 : tabs.length - 1)) % tabs.length];
+      next.focus(); select(next);
+    });
+  });
+  var h = (location.hash || "").replace("#", "");
+  var map = { banpo: "tb-banpo", bangbae: "tb-bangbae", samseong: "tb-samseong", dongjak: "tb-dongjak" };
+  if (map[h]) { var t = document.getElementById(map[h]); if (t) select(t); }
+})();
+</script>
+</body>
+</html>

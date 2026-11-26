@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>시안 A · 첫 화면 압축 — 테니스판타지 홈페이지 개편</title>
+<meta name="description" content="테니스판타지 홈페이지 개편 시안 A. 히어로 한 문장 + 버튼 3개, 바로 아래 지점 카드. 상세 설명은 접기." />
+<link rel="icon" href="../assets/brand/favicon.svg" type="image/svg+xml" />
+<link rel="stylesheet" href="../assets/base.css" />
+<style>
+/* ================= 시안 A — 첫 화면 압축 ================= */
+.heroA{position:relative;overflow:hidden;background:var(--dark);color:#fff;isolation:isolate}
+.heroA__bg{position:absolute;inset:0;z-index:-2}
+.heroA__bg img{width:100%;height:100%;object-fit:cover;object-position:50% 42%}
+.heroA__bg::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(49,9,111,.55) 0%,rgba(49,9,111,.72) 46%,rgba(36,39,42,.88) 100%);
+}
+.heroA__in{padding:30px 0 32px;display:flex;flex-direction:column;justify-content:flex-end;min-height:min(66vh,540px)}
+.heroA .eyebrow{color:var(--neon)}
+.heroA h1{font-size:clamp(30px,8.4vw,54px);margin-top:12px;letter-spacing:-.045em}
+.heroA h1 em{font-style:normal;color:var(--neon)}
+.heroA__lead{margin-top:12px;font-size:14px;line-height:1.7;color:rgba(255,255,255,.86);max-width:34ch}
+.heroA__btns{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px}
+.heroA__btns .btn{padding:0 8px;font-size:13px;gap:4px}
+.heroA__facts{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:20px;padding-top:16px;border-top:1px solid var(--wline);font-size:11.5px;color:rgba(255,255,255,.72)}
+.heroA__facts b{color:#fff;font-weight:700}
+
+/* 지점 카드 */
+.branchA .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px}
+.branchA .sec-head p{margin-top:8px}
+.bcards{display:grid;gap:14px}
+.bcard{position:relative;border:1px solid var(--line);background:#fff;transition:border-color .2s,box-shadow .2s}
+.bcard:hover{border-color:rgba(112,61,255,.5);box-shadow:var(--shadow)}
+.bcard__shot{aspect-ratio:16/10}
+.bcard__shot .shot__cap{font-size:10.5px}
+.bcard__body{padding:14px 15px 16px}
+.bcard__top{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.bcard__top h3{font-size:17px;letter-spacing:-.03em}
+.bcard__desc{margin-top:4px;font-size:12.5px;color:var(--gray-text);line-height:1.55}
+.bcard__meta{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-top:12px;padding-top:11px;border-top:1px dashed var(--line)}
+.bcard__price{font-size:11.5px;color:var(--muted)}
+.bcard__price b{display:block;font-size:15px;color:var(--ink);letter-spacing:-.02em}
+.bcard__go{font-size:12px;font-weight:700;color:var(--purple);white-space:nowrap}
+.bcard__go::after{content:" →";font-family:var(--latin)}
+.bcard__link{position:absolute;inset:0;z-index:2}
+.bcard__link span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.bcard.is-dark{background:var(--ink);border-color:var(--ink);color:#fff}
+.bcard.is-dark .bcard__desc{color:rgba(255,255,255,.66)}
+.bcard.is-dark .bcard__meta{border-top-color:rgba(255,255,255,.22)}
+.bcard.is-dark .bcard__price{color:rgba(255,255,255,.7)}
+.bcard.is-dark .bcard__price b{color:#fff}
+.bcard.is-dark .bcard__go{color:var(--neon)}
+.bcard.is-dark .tag--neon{background:var(--neon);color:#243000;border-color:var(--neon)}
+
+/* 접기 구역 */
+.acc-wrap{margin-top:34px}
+.acc__lead{font-size:12.5px;color:var(--gray-text);margin-bottom:6px}
+.acc .inside{padding-top:4px}
+.mini-grid{display:grid;gap:10px}
+.mini{border:1px solid var(--line);padding:14px}
+.mini b{display:block;font-size:14px}
+.mini p{margin-top:5px;font-size:12.5px;color:var(--gray-text);line-height:1.65}
+.price-mini{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:13px}
+.price-mini span{display:flex;align-items:baseline;gap:6px;color:var(--muted);font-size:12px}
+.price-mini b{font-size:14.5px;color:var(--ink)}
+.steps{margin-top:4px;display:grid;gap:10px}
+.steps li{display:grid;grid-template-columns:32px 1fr;gap:10px;align-items:start;font-size:13px;line-height:1.65}
+.steps .n{font-family:var(--latin);font-size:11px;font-weight:800;color:var(--purple);padding-top:3px}
+.steps b{display:block;font-size:13.5px}
+.steps span{color:var(--gray-text);font-size:12.5px}
+
+/* CTA */
+.ctaA{position:relative;overflow:hidden;background:var(--deep);color:#fff;padding:38px 0}
+.ctaA h2{font-size:clamp(21px,5.6vw,30px);margin-top:10px}
+.ctaA p{margin-top:10px;font-size:13px;color:rgba(255,255,255,.78);max-width:40ch}
+.ctaA .btn{margin-top:20px}
+
+@media(min-width:700px){
+  .bcards{grid-template-columns:1fr 1fr;gap:16px}
+  .mini-grid{grid-template-columns:1fr 1fr}
+  .heroA__in{padding:56px 0 48px;min-height:520px}
+  .heroA__btns{display:flex;gap:10px}
+  .heroA__btns .btn{min-width:150px;padding:0 20px;font-size:14px}
+  .heroA__lead{font-size:15.5px}
+  .section{padding:72px 0}
+}
+@media(min-width:1020px){
+  .bcards{grid-template-columns:repeat(4,1fr)}
+  .bcard__body{padding:15px 14px 17px}
+  .bcard__top h3{font-size:16.5px}
+  .heroA__in{min-height:500px}
+}
+</style>
+</head>
+<body>
+
+<div class="mockbar">
+  <div class="mockbar__in">
+    <div class="mockbar__top">
+      <div class="mockbar__id">
+        <span class="mockbar__letter">A</span>
+        <span class="mockbar__title">첫 화면 압축형 <em>히어로 1문장 + 지점 카드</em></span>
+      </div>
+      <a class="mockbar__back" href="../index.html">4종 비교로 ↩</a>
+    </div>
+    <div class="mockbar__notes">
+      <span class="good"><b>장점</b> 첫 화면에서 지점·가격까지 끝납니다. 스크롤이 가장 짧고 모바일에서 빠릅니다.</span>
+      <span class="bad"><b>아쉬움</b> 시설·로드맵·이벤트는 접힌 메뉴 안이라, 안 열어 보면 없는 것과 같습니다.</span>
+    </div>
+  </div>
+</div>
+
+<header class="sitehead">
+  <div class="sitehead__in">
+    <a class="brand" href="#top" aria-label="테니스판타지 홈">
+      <span class="brand__en">TENNIS FANTASY</span>
+      <span class="brand__kr">테니스판타지</span>
+    </a>
+    <div class="headact">
+      <a class="is-solid" href="https://pf.kakao.com/_xhumzs" target="_blank" rel="noopener">카카오톡 상담</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- ============ 히어로: 한 문장 + 버튼 3개 ============ -->
+  <section class="heroA">
+    <div class="heroA__bg"><img src="../assets/images/hero.jpg" alt="테니스판타지 보라색 실내 코트" fetchpriority="high" /></div>
+    <div class="heroA__in wrap">
+      <span class="eyebrow">Indoor Tennis · Since 2021</span>
+      <h1>처음 잡은 라켓도<br /><em>판타지</em>가 됩니다</h1>
+      <p class="heroA__lead">보라색 코트의 실내 테니스 레슨. 반포·방배·삼성·동작 네 곳, 라켓은 대여해 드립니다.</p>
+      <div class="heroA__btns">
+        <a class="btn btn--primary" href="https://pf.kakao.com/_xhumzs" target="_blank" rel="noopener">레슨 문의</a>
+        <a class="btn btn--ghost" href="#branches">지점 찾기</a>
+        <a class="btn btn--ghost" href="https://ouy2006.github.io/tf-calc/" target="_blank" rel="noopener">수강료</a>
+      </div>
+      <ul class="heroA__facts">
+        <li><b>4곳</b> 반포·방배·삼성·동작</li>
+        <li><b>06:00–22:00</b> 실내 지점</li>
+        <li><b>라켓 대여</b> 월 10,000원</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ 지점 카드 4개 ============ -->
+  <section class="section branchA" id="branches">
+    <div class="wrap">
+      <div class="sec-head">
+        <div>
+          <span class="eyebrow">Branches</span>
+          <h2>가까운 지점부터 보세요</h2>
+          <p>네 곳 모두 카카오톡으로 상담합니다. 카드를 누르면 그 지점 채널로 바로 연결됩니다.</p>
+        </div>
+      </div>
+
+      <div class="bcards">
+        <article class="bcard">
+          <div class="shot bcard__shot">
+            <img src="../assets/images/banpo-court-wide.jpg" alt="반포점 보라색 코트 전경" loading="lazy" />
+            <span class="shot__cap">반포 · Pleasure Purple Court</span>
+          </div>
+          <div class="bcard__body">
+            <div class="bcard__top"><h3>반포점</h3><span class="tag">1호점</span></div>
+            <p class="bcard__desc">실내 2면 · 라운지 · 볼머신<br />고속터미널역 도보 5분</p>
+            <div class="bcard__meta">
+              <p class="bcard__price">20분 1:1 주 1회<b>160,000원</b></p>
+              <span class="bcard__go">상담</span>
+            </div>
+          </div>
+          <a class="bcard__link" href="https://pf.kakao.com/_xhumzs" target="_blank" rel="noopener"><span>반포점 카카오톡 상담</span></a>
+        </article>
+
+        <article class="bcard">
+          <div class="ph bcard__shot">
+            <div class="ph__in"><b>BANGBAE</b><span>현장 사진 준비 중</span></div>
+          </div>
+          <div class="bcard__body">
+            <div class="bcard__top"><h3>방배점</h3><span class="tag">실내 100평+</span></div>
+            <p class="bcard__desc">워밍업존 · 2층 편집숍<br />방배역·내방역 도보 5분</p>
+            <div class="bcard__meta">
+              <p class="bcard__price">정규 1:1 주 1회<b>180,000원</b></p>
+              <span class="bcard__go">상담</span>
+            </div>
+          </div>
+          <a class="bcard__link" href="https://pf.kakao.com/_TYdxfb" target="_blank" rel="noopener"><span>방배점 카카오톡 상담</span></a>
+        </article>
+
+        <article class="bcard">
+          <div class="shot bcard__shot">
+            <img src="../assets/images/samsung-court.jpg" alt="삼성점 보라색 실내 코트" loading="lazy" />
+            <span class="shot__cap">삼성 · Court &amp; Fitness</span>
+          </div>
+          <div class="bcard__body">
+            <div class="bcard__top"><h3>삼성점</h3><span class="tag">+ 피트니스</span></div>
+            <p class="bcard__desc">레슨하면 피트니스 무료<br />삼성역·선릉역 사이</p>
+            <div class="bcard__meta">
+              <p class="bcard__price">체험 20분 + 볼머신<b>가격은 채널 안내</b></p>
+              <span class="bcard__go">상담</span>
+            </div>
+          </div>
+          <a class="bcard__link" href="https://pf.kakao.com/_XelyG" target="_blank" rel="noopener"><span>삼성점 카카오톡 상담</span></a>
+        </article>
+
+        <article class="bcard is-dark">
+          <div class="shot bcard__shot">
+            <img src="../assets/images/outdoor-clay2.jpg" alt="야외 클레이 코트" loading="lazy" />
+            <span class="shot__cap">동작 · Outdoor Clay</span>
+          </div>
+          <div class="bcard__body">
+            <div class="bcard__top"><h3>동작테니스장</h3><span class="tag tag--neon">야외</span></div>
+            <p class="bcard__desc">클레이 6면 · 클럽<br />동작역 도보 3분</p>
+            <div class="bcard__meta">
+              <p class="bcard__price">코트 예약은 서울시 예약<b>레슨은 채널 문의</b></p>
+              <span class="bcard__go">상담</span>
+            </div>
+          </div>
+          <a class="bcard__link" href="https://pf.kakao.com/_jxkxaxhn" target="_blank" rel="noopener"><span>동작테니스장 카카오톡 상담</span></a>
+        </article>
+      </div>
+
+      <!-- ============ 접기: 상세 설명 / 로드맵 / 이벤트 ============ -->
+      <div class="acc-wrap">
+        <p class="acc__lead">더 알고 싶을 때만 열면 됩니다.</p>
+        <div class="acc">
+
+          <details>
+            <summary>레슨 방식과 수강료 <span class="plus" aria-hidden="true"></span></summary>
+            <div class="acc__body inside">
+              <div class="mini-grid">
+                <div class="mini">
+                  <b>정규레슨 · 요일 고정</b>
+                  <p>매주 같은 요일·시간. 한 달 단위 등록, 1:1 / 1:2 · 주 1·2·3회. 2개월·3개월 등록 시 지점별 할인.</p>
+                </div>
+                <div class="mini">
+                  <b>쿠폰레슨 · 수시 예약</b>
+                  <p>원하는 날 카카오톡으로 예약. 1·5·10회권, 악천후·공휴일은 차감 없음.</p>
+                </div>
+              </div>
+              <div class="price-mini">
+                <span>반포 20분 1:1 주 1회 <b>160,000원</b></span>
+                <span>반포 30분 1:1 주 1회 <b>240,000원</b></span>
+                <span>반포 쿠폰 20분 1회 <b>45,000원</b></span>
+                <span>방배 정규 1:1 주 1회 <b>180,000원</b></span>
+                <span>코트 대여 1시간 <b>30,000원</b></span>
+              </div>
+              <p style="margin-top:12px;font-size:12px;color:var(--gray-text)">삼성·동작은 프로그램과 가격이 달라 채널로 안내합니다. 표 전체는 수강료 계산기와 현재 홈페이지에서 볼 수 있습니다.</p>
+              <a class="btn btn--dark btn--sm" href="https://ouy2006.github.io/tf-calc/" target="_blank" rel="noopener" style="margin-top:14px">수강료 계산기 <span class="btn__arrow" aria-hidden="true">→</span></a>
+            </div>
+          </details>
+
+          <details>
+            <summary>지점별 시설 <span class="plus" aria-hidden="true"></span></summary>
+            <div class="acc__body inside">
+              <div class="mini-grid">
+                <div class="mini"><b>반포점</b><p>실내 코트 2면 · 볼머신 · 스크린 테니스 타깃 · 라운지 &amp; 무료 커피 · 남녀 샤워실 · 라켓 월 · 건물 앞 주차(만차 시 공영 1시간 지원)</p></div>
+                <div class="mini"><b>방배점</b><p>100평 이상 실내 코트(지하1~지상2층) · 워밍업존+테라스 · 볼머신실 · 2층 테니스 편집숍 · 락커·샤워실 · 주차 1시간 지원</p></div>
+                <div class="mini"><b>삼성점</b><p>실내 코트 · 버핏그라운드 피트니스 무료 · 필라테스·패시브 스트레칭 같은 건물 · 주차 2시간 무료 · 실내운동화 지참</p></div>
+                <div class="mini"><b>동작테니스장</b><p>야외 클레이 6면 · 야간 조명 3면 · 탈의실·샤워실 · 주차 147면(5분당 100원) · 코트 예약은 서울시 공공예약</p></div>
+              </div>
+            </div>
+          </details>
+
+          <details>
+            <summary>라켓 잡은 날부터 이어지는 성장 로드맵 <span class="plus" aria-hidden="true"></span></summary>
+            <div class="acc__body inside">
+              <ol class="steps">
+                <li><span class="n">01</span><div><b>레슨 — 기본기 다지기</b><span>레벨 D·C · 1시간은 웜업 15~20분 + 레슨 20~30분 + 셀프 볼머신.</span></div></li>
+                <li><span class="n">02</span><div><b>테생이 머리올려</b><span>레벨 B2 이하 · 야외 풀코트 3시간, 룰·매너 배우고 그날 복식 경기. 참가비 30,000원.</span></div></li>
+                <li><span class="n">03</span><div><b>수준별 클럽</b><span>목·금·일 야외 코트 · 정원 16명 · 신청 화요일 10시.</span></div></li>
+              </ol>
+            </div>
+          </details>
+
+          <details>
+            <summary>이벤트 · 클럽 <span class="plus" aria-hidden="true"></span></summary>
+            <div class="acc__body inside">
+              <div class="mini-grid">
+                <div class="mini"><b>테생이 머리올려</b><p>57기까지 진행 · 테판 성인회원 레벨 B2 이하 · 참가비 30,000원 선착순.</p></div>
+                <div class="mini"><b>주말 클럽</b><p>목 08–11시 반포 7·8번 / 금 19–22시 반포 5·6번 / 일 15–18시 동작 5·6번.</p></div>
+                <div class="mini"><b>키즈테니스 대회</b><p>2025년 8월 반포점 · 참가비 30,000원.</p></div>
+                <div class="mini"><b>어르신 스포츠상품권</b><p>65세 이상 기초연금 수급자 · 최대 15만원 · 지점 채널 문의.</p></div>
+              </div>
+            </div>
+          </details>
+
+          <details>
+            <summary>오시는 길 · 전화번호 <span class="plus" aria-hidden="true"></span></summary>
+            <div class="acc__body inside">
+              <div class="mini-grid">
+                <div class="mini"><b>반포점 · 0507-1377-1821</b><p>서울 서초구 고무래로10길 17 동호빌딩 지하 2층 · 3·7·9호선 고속터미널역 도보 5분</p></div>
+                <div class="mini"><b>방배점 · 0507-1327-1821</b><p>서울 서초구 방배로 118 · 2호선 방배역·7호선 내방역 도보 5분</p></div>
+                <div class="mini"><b>삼성점 · 0507-1419-5420</b><p>서울 강남구 삼성로 512 삼성동빌딩 지하 1층 · 삼성역·선릉역 사이</p></div>
+                <div class="mini"><b>동작테니스장 · 레슨 010-8773-9172</b><p>서울 동작구 현충로 220 동작주차공원 내 · 4·9호선 동작역 도보 3분 · 시설 010-2474-2461</p></div>
+              </div>
+            </div>
+          </details>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA ============ -->
+  <section class="ctaA">
+    <div class="field" aria-hidden="true"></div>
+    <div class="wrap" style="position:relative">
+      <span class="eyebrow" style="color:var(--neon)">Pleasure &amp; Potential</span>
+      <h2>라켓은 대여해 드립니다.<br />실내운동화만 챙겨 오세요.</h2>
+      <p>원하는 요일과 시간대 2~3개를 알려 주시면 빈 시간을 확인해 체험 수업과 등록을 함께 안내드립니다.</p>
+      <a class="btn btn--neon" href="https://pf.kakao.com/_xhumzs" target="_blank" rel="noopener">카카오톡으로 상담하기</a>
+    </div>
+  </section>
+</main>
+
+<footer class="sitefoot">
+  <div class="wrap">
+    <div class="sitefoot__top">
+      <div class="sitefoot__brand">
+        <b>TENNIS FANTASY</b>
+        <p>보라색 코트의 실내 테니스 레슨. 반포 · 방배 · 삼성 · 동작.<br />© 2026 TENNIS FANTASY. All rights reserved.</p>
+      </div>
+      <nav class="sitefoot__links" aria-label="채널">
+        <a href="https://pf.kakao.com/_xhumzs" target="_blank" rel="noopener">반포 카카오채널</a>
+        <a href="https://pf.kakao.com/_TYdxfb" target="_blank" rel="noopener">방배</a>
+        <a href="https://pf.kakao.com/_XelyG" target="_blank" rel="noopener">삼성</a>
+        <a href="https://pf.kakao.com/_jxkxaxhn" target="_blank" rel="noopener">동작</a>
+        <a href="https://www.instagram.com/tennis_fantasy/" target="_blank" rel="noopener">인스타그램</a>
+        <a href="https://blog.naver.com/erachacha2021" target="_blank" rel="noopener">블로그</a>
+      </nav>
+    </div>
+    <p class="sitefoot__note">가격·시설 정보는 2026년 11월 기준 확인된 자료입니다. 실제 운영 기준과 다를 수 있어 방문 전 카카오톡 채널 확인을 권장합니다. · 이 페이지는 개편 시안 A 목업입니다.</p>
+  </div>
+</footer>
+
+</body>
+</html>

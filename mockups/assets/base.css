@@ -1,0 +1,218 @@
+/* ============================================================
+   TENNIS FANTASY — 홈페이지 개편 시안 공통 스타일
+   현재 사이트(tf-homepage-deploy/index.html)의 브랜드 시스템을 그대로 이어받습니다.
+   Pleasure Purple #703DFF · Potential White #FFFFFF · Neon Green #B1FD07
+   ============================================================ */
+@font-face{font-family:"Syne";src:url("fonts/Syne-latin.woff2") format("woff2");font-weight:400 800;font-style:normal;font-display:swap}
+@font-face{font-family:"Spoqa Han Sans Neo";src:url("fonts/SpoqaHanSansNeo-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Spoqa Han Sans Neo";src:url("fonts/SpoqaHanSansNeo-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"Spoqa Han Sans Neo";src:url("fonts/SpoqaHanSansNeo-Bold.woff2") format("woff2");font-weight:700 800;font-style:normal;font-display:swap}
+
+:root{
+  --white:#FFFFFF; --purple:#703DFF; --purple-hover:#5A2BD6; --deep:#411199; --dark:#31096F;
+  --ink:#24272A; --gray:#97A3AE; --lgray:#D8DFE1; --lpurple:#C5B4E2; --neon:#B1FD07;
+  --muted:#586067; --gray-text:#6B747C; --tint:#F4F1FF; --tint-2:#EDE7FF;
+  --line:rgba(36,39,42,.14); --line-2:rgba(36,39,42,.28); --wline:rgba(255,255,255,.22);
+  --latin:"Syne","Spoqa Han Sans Neo",system-ui,sans-serif;
+  --kr:"Spoqa Han Sans Neo","Apple SD Gothic Neo","Noto Sans KR",system-ui,sans-serif;
+  --max:1160px; --hdr:60px; --shadow:0 26px 60px -44px rgba(49,9,111,.5);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--white);color:var(--ink);
+  font-family:var(--kr);font-size:16px;line-height:1.7;font-weight:400;
+  letter-spacing:-.012em;-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:break-word;
+}
+img{display:block;max-width:100%;height:auto}
+a{color:inherit;text-decoration:none}
+p{margin:0}
+h1,h2,h3,h4{margin:0;line-height:1.18;letter-spacing:-.035em;font-weight:700}
+ul,ol{margin:0;padding:0;list-style:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+:focus-visible{outline:2px solid var(--purple);outline-offset:3px}
+[hidden]{display:none !important}
+
+.wrap{width:min(100% - 40px,var(--max));margin-inline:auto}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;font-family:var(--latin);
+  font-size:10.5px;font-weight:700;letter-spacing:.26em;text-transform:uppercase;color:var(--purple);
+}
+.eyebrow::before{content:"";width:26px;height:1px;background:currentColor}
+.tag{
+  display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border:1px solid rgba(112,61,255,.34);
+  color:var(--purple);background:#fff;font-size:11.5px;font-weight:500;white-space:nowrap;
+}
+.tag--ok{border-color:var(--line-2);color:var(--ink)}
+.tag--neon{border-color:rgba(177,253,7,.8);background:rgba(177,253,7,.16);color:#3E4E00}
+.tag--en{font-family:var(--latin);font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:uppercase}
+
+/* buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;height:48px;padding:0 20px;
+  border:1px solid transparent;border-radius:2px;font-family:var(--kr);font-size:14px;font-weight:700;
+  line-height:1;transition:background .2s,color .2s,border-color .2s,transform .2s;
+}
+.btn:hover{transform:translateY(-1px)}
+.btn--primary{background:var(--purple);color:#fff}
+.btn--primary:hover{background:var(--purple-hover)}
+.btn--line{border-color:var(--line-2);color:var(--ink);background:transparent}
+.btn--line:hover{background:var(--ink);border-color:var(--ink);color:#fff}
+.btn--dark{background:var(--ink);color:#fff}
+.btn--neon{background:var(--neon);color:#243000}
+.btn--onpurple{background:#fff;color:var(--purple)}
+.btn--ghost{border-color:rgba(255,255,255,.55);color:#fff}
+.btn--sm{height:40px;padding:0 14px;font-size:13px}
+.btn__arrow{font-family:var(--latin);font-size:15px;line-height:1}
+
+/* brand pinstripe field */
+.field{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+.field::before{
+  content:"";position:absolute;inset:0;
+  background-image:repeating-linear-gradient(90deg,var(--stripe,rgba(255,255,255,.5)) 0 1px,transparent 1px var(--gap,10px));
+  opacity:var(--stripe-op,.85);
+  -webkit-mask-image:radial-gradient(120% 120% at 50% 46%,transparent 10%,rgba(0,0,0,.18) 44%,#000 92%);
+  mask-image:radial-gradient(120% 120% at 50% 46%,transparent 10%,rgba(0,0,0,.18) 44%,#000 92%);
+}
+
+/* ============================================================
+   시안 라벨 바 — 목업 전용 (사이트 일부가 아님)
+   ============================================================ */
+.mockbar{background:var(--ink);color:#fff;position:relative;z-index:60}
+.mockbar__in{
+  width:min(100% - 32px,var(--max));margin-inline:auto;padding:12px 0 14px;
+  display:flex;flex-direction:column;gap:10px;
+}
+.mockbar__top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.mockbar__id{display:flex;align-items:center;gap:10px;min-width:0}
+.mockbar__letter{
+  flex:0 0 auto;display:grid;place-items:center;width:26px;height:26px;background:var(--neon);color:#243000;
+  font-family:var(--latin);font-weight:800;font-size:14px;border-radius:2px;
+}
+.mockbar__title{font-size:14px;font-weight:700;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mockbar__title em{font-style:normal;color:var(--lgray);font-weight:400;font-size:12.5px;margin-left:6px}
+.mockbar__back{
+  flex:0 0 auto;font-size:12px;font-weight:700;color:var(--neon);border-bottom:1px solid rgba(177,253,7,.45);
+  padding-bottom:2px;white-space:nowrap;
+}
+.mockbar__notes{display:grid;gap:4px;font-size:12.5px;line-height:1.55;color:#D8DFE1}
+.mockbar__notes b{color:#fff;font-weight:700}
+.mockbar__notes .good::before{content:"+ ";color:var(--neon);font-weight:800}
+.mockbar__notes .bad::before{content:"– ";color:#FFAA8B;font-weight:800}
+@media(min-width:760px){
+  .mockbar__in{flex-direction:row;align-items:center;justify-content:space-between;gap:28px;padding:10px 0}
+  .mockbar__notes{grid-template-columns:1fr 1fr;gap:4px 26px;font-size:12.5px}
+  .mockbar__notes span{max-width:32ch}
+}
+
+/* ============================================================
+   사이트 헤더 (간결형)
+   ============================================================ */
+.sitehead{
+  position:sticky;top:0;z-index:50;background:rgba(255,255,255,.94);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--line);
+}
+.sitehead__in{
+  width:min(100% - 32px,var(--max));margin-inline:auto;height:var(--hdr);
+  display:flex;align-items:center;justify-content:space-between;gap:14px;
+}
+.brand{display:flex;align-items:baseline;gap:10px;min-width:0}
+.brand__en{
+  font-family:var(--latin);font-size:12.5px;font-weight:800;letter-spacing:.2em;color:var(--ink);
+  white-space:nowrap;
+}
+.brand__kr{font-size:11px;font-weight:500;letter-spacing:.14em;color:var(--gray-text);padding-left:10px;border-left:1px solid var(--line);white-space:nowrap}
+.headact{display:flex;align-items:center;gap:8px}
+.headact a{
+  display:inline-flex;align-items:center;height:34px;padding:0 12px;border:1px solid var(--line-2);
+  font-size:12.5px;font-weight:700;border-radius:2px;white-space:nowrap;
+}
+@media(max-width:480px){
+  .brand__kr{display:none}
+  .brand__en{font-size:11.5px;letter-spacing:.16em}
+  .headact a{height:32px;padding:0 10px;font-size:12px}
+}
+.headact a.is-solid{background:var(--ink);border-color:var(--ink);color:#fff}
+
+/* ============================================================
+   섹션 공통
+   ============================================================ */
+.section{padding:52px 0;position:relative}
+.section--tint{background:var(--tint)}
+.section--dark{background:var(--dark);color:#fff}
+.sec-head{margin-bottom:26px}
+.sec-head h2{font-size:clamp(22px,5.4vw,34px);margin-top:10px}
+.sec-head p{margin-top:10px;color:var(--muted);font-size:14.5px;line-height:1.75;max-width:56ch}
+.sec-head--row{display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* photo frame */
+.shot{position:relative;overflow:hidden;background:var(--tint-2)}
+.shot img{width:100%;height:100%;object-fit:cover}
+.shot__cap{
+  position:absolute;left:0;bottom:0;padding:6px 10px;background:rgba(36,39,42,.72);color:#fff;
+  font-size:11px;font-weight:500;letter-spacing:.02em;
+}
+.ph{
+  position:relative;display:grid;place-items:center;overflow:hidden;
+  background:
+    radial-gradient(90% 90% at 20% 0%,rgba(197,180,226,.95),transparent 60%),
+    linear-gradient(150deg,var(--deep),var(--dark));
+}
+.ph::before{
+  content:"";position:absolute;inset:0;
+  background-image:repeating-linear-gradient(90deg,rgba(255,255,255,.22) 0 1px,transparent 1px 9px);
+  opacity:.5;
+}
+.ph__in{position:relative;text-align:center;color:#fff;padding:14px}
+.ph__in b{display:block;font-family:var(--latin);font-size:11px;font-weight:800;letter-spacing:.22em;opacity:.9}
+.ph__in span{display:block;margin-top:6px;font-size:11.5px;color:rgba(255,255,255,.72)}
+
+/* 한 줄 팩트 */
+.facts{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.facts > div{background:#fff;padding:14px 14px}
+.facts b{display:block;font-size:14px;font-weight:700;line-height:1.35}
+.facts span{display:block;margin-top:3px;font-size:11.5px;color:var(--gray-text)}
+
+/* 접기(details) */
+.acc{border-top:1px solid var(--line)}
+.acc details{border-bottom:1px solid var(--line)}
+.acc summary{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 2px;
+  font-size:15.5px;font-weight:700;cursor:pointer;list-style:none;
+}
+.acc summary::-webkit-details-marker{display:none}
+.acc summary .plus{
+  flex:0 0 auto;display:grid;place-items:center;width:26px;height:26px;border:1px solid var(--line-2);
+  position:relative;border-radius:50%;transition:.2s;
+}
+.acc summary .plus::before,.acc summary .plus::after{
+  content:"";position:absolute;background:var(--ink);transition:.2s;
+}
+.acc summary .plus::before{width:10px;height:1px}
+.acc summary .plus::after{width:1px;height:10px}
+.acc details[open] summary .plus{background:var(--neon);border-color:var(--neon)}
+.acc details[open] summary .plus::after{transform:scaleY(0)}
+.acc__body{padding:2px 2px 24px}
+.acc__body p{font-size:14px;color:var(--muted);line-height:1.8}
+
+/* ============================================================
+   푸터
+   ============================================================ */
+.sitefoot{border-top:1px solid var(--line);padding:28px 0 40px;background:#fff}
+.sitefoot__top{display:grid;gap:16px}
+.sitefoot__brand b{font-family:var(--latin);font-size:12px;font-weight:800;letter-spacing:.2em}
+.sitefoot__brand p{margin-top:6px;font-size:12px;color:var(--gray-text);line-height:1.7}
+.sitefoot__links{display:flex;flex-wrap:wrap;gap:8px 14px;font-size:12.5px;color:var(--muted)}
+.sitefoot__links a{border-bottom:1px solid var(--line);padding-bottom:2px}
+.sitefoot__note{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:11.5px;color:var(--gray-text);line-height:1.7}
+@media(min-width:760px){
+  .sitefoot__top{grid-template-columns:1fr 1fr;align-items:start;gap:32px}
+  .sitefoot__links{justify-content:flex-end}
+}
+
+/* etc */
+.hair{height:1px;background:var(--line);border:0;margin:0}
+.link-arrow{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:var(--purple)}
+.link-arrow::after{content:"→";font-family:var(--latin)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
