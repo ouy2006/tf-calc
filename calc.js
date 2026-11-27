@@ -238,12 +238,11 @@
       return validationResult(errors);
     }
     var yearKeys = Object.keys(data.years);
-    if (yearKeys.length < 2) add("최소 현재 연도와 다음 연도 데이터가 필요합니다.");
-    var seoulNow = new Date(Date.now() + 9 * 60 * 60 * 1000);
-    var currentYear = String(seoulNow.getUTCFullYear());
-    var nextYear = String(seoulNow.getUTCFullYear() + 1);
-    if (!Object.prototype.hasOwnProperty.call(data.years, currentYear)) add("현재 연도 " + currentYear + "년 데이터가 없습니다.");
-    if (!Object.prototype.hasOwnProperty.call(data.years, nextYear)) add("다음 연도 " + nextYear + "년 데이터가 없습니다.");
+    if (!yearKeys.length) add("공휴일 데이터가 한 해도 없습니다.");
+    /* 연도별 데이터 유무는 화면에서 월 단위로 판단한다(E-HOLIDAY-YEAR 안내 + [공휴일 없이 계산]).
+       여기서 "현재 연도·다음 연도"를 요구하면 다음 해 데이터를 채우기 전까지
+       계산기 전체가 로드 단계에서 잠긴다. 2027-01-01에 2028년 데이터가 없어
+       모든 입력이 비활성화되던 원인이 이 검사였다. */
     yearKeys.forEach(function (year) {
       var records = data.years[year];
       if (!/^\d{4}$/.test(year) || !Array.isArray(records)) {
